@@ -1,0 +1,40 @@
+{
+  "name": "some-components",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@storybook/addon-console": "^1.2.3",
+    "@storybook/addon-essentials": "^6.5.15",
+    "@storybook/addon-interactions": "^6.5.15",
+    "@storybook/addon-links": "^6.5.15",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/builder-vite": "^0.3.0",
+    "@storybook/channel-postmessage": "^6.5.15",
+    "@storybook/channel-websocket": "^6.5.15",
+    "@storybook/client-api": "^6.5.15",
+    "@storybook/html": "^6.5.15",
+    "@storybook/preview-web": "^6.5.15",
+    "@types/mapbox-gl": "^2.7.10",
+    "autoprefixer": "^10.4.13",
+    "babel-loader": "^9.1.2",
+    "postcss": "^8.4.20",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.2.4",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.3",
+    "vite-plugin-solid": "^2.5.0"
+  },
+  "dependencies": {
+    "apexcharts": "^3.36.3",
+    "mapbox-gl": "^2.12.0",
+    "solid-apexcharts": "^0.2.4",
+    "solid-js": "^1.6.6"
+  }
+}

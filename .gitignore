@@ -1,0 +1,16 @@
+# Dependencies
+node_modules
+
+# Storybook
+storybook-static
+
+# Miscs
+*.log
+vite.config.ts.temp*
+
+# Production
+dist
+
+# Vercel
+.vercel
+.env
