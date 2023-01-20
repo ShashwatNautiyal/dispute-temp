@@ -24,7 +24,7 @@ const MapBox: Component<{
   })
 
   return (
-    <div class="h-[400px] w-[400px]" ref={mapContainerRef} />
+    <div class="h-full w-full" ref={mapContainerRef} />
   );
 };
 

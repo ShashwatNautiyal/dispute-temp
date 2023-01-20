@@ -1,4 +1,6 @@
 import MapBox from "@/components/MapBox";
+import AppBar from "@/components/AppBar";
+
 import type { Meta, StoryFn } from "@storybook/html";
 import type { ComponentProps } from "solid-js";
 
@@ -8,7 +10,24 @@ const Template = ((args) =>
   ComponentProps<typeof MapBox>
 >;
 
-export const Default = Template.bind({});
+export const MapBoxOnly = Template.bind({});
+
+const TemplateWithSideBar = ((args) =>
+  <main class="h-screen w-screen flex">
+  <div class="w-max">
+
+  <AppBar />
+  </div>
+    <MapBox {...args} />
+  </main>
+) as StoryFn<
+  ComponentProps<typeof MapBox>
+>;
+
+export const MapBoxWithSideBar = TemplateWithSideBar.bind({});
+MapBoxWithSideBar.paramaters = {
+  layout: "fullscreen"
+}
 
 export default {
   title: "MapBox",
