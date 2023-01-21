@@ -19,7 +19,7 @@ const FromMessage: Component<{
   embedImageUrl: string,
   embedTitle: string
 }> = (props) => (
-  <div class="flex gap-2">
+  <div class="flex gap-2 p-2 rounded-[12px] hover:bg-[#f5f5f5]">
     <Avatar letter={props.fromName[0]} />
 
     <div class="flex flex-col gap-1">
@@ -30,7 +30,7 @@ const FromMessage: Component<{
 
       <div class="flex flex-col gap-1">
         <p class="font-medium">{props.title}</p>
-        <span class="text-[13px] leading-5 font-normal text-[#494949]">{props.body}</span>
+        <span class="text-[15px] leading-5 font-normal">{props.body}</span>
 
         <CardAmount
           cardDigits={props.cardDigits}
