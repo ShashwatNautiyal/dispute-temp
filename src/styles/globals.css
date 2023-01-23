@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --scrollbar-width: 2px;
+}
+
+::-webkit-scrollbar{
+  background: transparent;
+  width: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-thumb{
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-resizer,
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-corner { display: none; }
