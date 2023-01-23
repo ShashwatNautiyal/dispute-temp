@@ -1,14 +1,10 @@
-import type { Component } from "solid-js";
-import AppIcon from "./AppIcon";
+import type { FlowComponent } from "solid-js";
 
-const AppBar: Component = () => {
-  return (
-    <div class="h-full w-[64px] overflow-auto flex flex-col gap-[8px] py-[8px] pr-[10px] bg-grey-200">
-      <AppIcon active={true} letter="A" showNotifications={false} />
-      <AppIcon active={false} letter="B" showNotifications={true} notifications="99" />
-    </div>
-  );
-};
+const AppBar: FlowComponent = (props) => (
+  <div class="h-full w-[64px] overflow-hidden hover:overflow-auto flex flex-col gap-[8px] py-[8px] pr-[10px] bg-grey-200 flex-shrink-0">
+    {props.children}
+  </div>
+);
 
 export default AppBar;
 

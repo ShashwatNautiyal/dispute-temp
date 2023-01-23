@@ -4,7 +4,7 @@ import type { ComponentProps } from "solid-js";
 
 const Template = ((args) => (
   <Modal {...args}>
-    <div>
+    <div class="bg-white">
       <h1>Hello World</h1>
       <p>This is an example modal!</p>
     </div>

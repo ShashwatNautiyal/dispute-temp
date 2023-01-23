@@ -4,8 +4,6 @@ import type { ComponentProps } from "solid-js";
 
 const Template = ((args) => 
   <TransOverview
-    avatarLetter={args.avatarLetter}
-
     fromName={args.fromName}
     fromDescription={args.fromDescription}
 
@@ -24,8 +22,6 @@ export const Default = Template.bind({});
 export default {
   title: "TransOverview",
   args: {
-    avatarLetter: "L",
-
     fromName: "Leslie Alexander",
     fromDescription: "Merchandise / Services not received",
     fromDate: new Date(),
@@ -34,8 +30,6 @@ export default {
     cardDigits: "5567"
   },
   argTypes: {
-    avatarLetter: { control: "text" },
-
     fromName: { control: "text" },
     fromDescription: { control: "text" },
     fromDate: { control: "date" },

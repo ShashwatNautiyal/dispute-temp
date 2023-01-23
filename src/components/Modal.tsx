@@ -6,9 +6,9 @@ import { Show } from "solid-js";
 const Modal: FlowComponent<{ open: boolean, onClose: () => unknown }> = (props) => (
   <Portal>
     <Show when={props.open}>
-      <div class="z-[50] fixed inset-0 bg-black/20" />
-      <div class="z-[55] fixed inset-0 flex justify-center items-center">
-        <div class="bg-white shadow">
+      <div class="z-50 fixed inset-0 flex justify-center items-center">
+        <div class="absolute inset-0 bg-black/20" onClick={props.onClose} />
+        <div class="relative z-[55]">
           {props.children}
         </div>
       </div>

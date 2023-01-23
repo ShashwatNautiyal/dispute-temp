@@ -1,5 +1,6 @@
 import MapBox from "@/components/MapBox";
 import AppBar from "@/components/AppBar";
+import AppIcon from "@/components/AppIcon";
 
 import type { Meta, StoryFn } from "@storybook/html";
 import type { ComponentProps } from "solid-js";
@@ -16,7 +17,11 @@ const TemplateWithSideBar = ((args) =>
   <main class="h-screen w-screen flex">
   <div class="w-max">
 
-  <AppBar />
+  <AppBar>
+    <AppIcon active={true} letter="H" showNotifications={false} />
+    <AppIcon active={false} letter="P" showNotifications={true} notifications="2" />
+  </AppBar>
+  
   </div>
     <MapBox {...args} />
   </main>
@@ -32,6 +37,7 @@ MapBoxWithSideBar.paramaters = {
 export default {
   title: "MapBox",
   args: {
+    // Access Token taken from their documentation.
     accessToken: "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg"
   },
   argTypes: {

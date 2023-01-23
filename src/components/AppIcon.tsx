@@ -14,9 +14,11 @@ const AppIcon: Component<{ active: boolean, letter: string, showNotifications: b
           "rounded-xl": props.active
         }}
       >
-        <span class="h-[20] w-[20] text-[15px] leading-5 font-medium">
-          {props.letter}
-        </span>
+        <div class="h-[20px] w-[20px] flex justify-center items-center">
+          <span class="text-[15px] leading-5 font-medium text-center">
+            {props.letter}
+          </span>
+        </div>
 
         <Show when={props.showNotifications}>
           <div class="absolute bottom-0 right-0">
