@@ -13,9 +13,11 @@ export const Default = Template.bind({});
 export default {
   title: "Search",
   args: {
-    placeholder: "Search Providers"
+    placeholder: "Search Providers",
+    showSearchActions: false
   },
   argTypes: {
-    placeholder: { control: "text" }
+    placeholder: { control: "text" },
+    showSearchActions: { control: "boolean" },
   },
 } as Meta<ComponentProps<typeof Search>>;
