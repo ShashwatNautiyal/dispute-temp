@@ -10,7 +10,7 @@ const Header: Component<{
   <div class="flex flex-col gap-2">
     <div class="flex flex-col gap-[2px]">
       <h1 class="text-[19px] leading-6 font-semibold">{props.title}</h1>
-      <p class="text-[15px] leading-5 font-normal">{props.description}</p>
+      <p class="text-[15px] leading-5 font-normal text-[#86868B]">{props.description}</p>
     </div>
     <div>
       <button class="text-[13px] leading-5 font-medium py-1 px-2 rounded-[16px] border border-blue-400 text-blue-400"
