@@ -11,7 +11,7 @@ const TransOverview: Component<{
   cardDigits: string,
   cardAmount: number
 }> = (props) => (
-  <div class="flex gap-2 p-2 rounded-[12px] hover:bg-[#f2f2f2]">
+  <div class="flex gap-2 p-2 rounded-[12px] hover:bg-[#f2f2f2] transition-colors">
     <Avatar letter={props.fromName[0]} />
     <FromDetailWrapper
       fromName={props.fromName}
