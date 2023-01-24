@@ -3,6 +3,7 @@ import type { Component } from "solid-js";
 import { For, Show, createMemo, createSignal } from "solid-js";
 import { A, Outlet } from "@solidjs/router";
 
+import HandleTransition from "@/components/HandleTransition";
 import TransOverview from "@/components/TransOverview";
 import Search from "@/components/Search";
 
@@ -54,4 +55,8 @@ const ProviderPage: Component = () => {
   );
 };
 
-export default ProviderPage;
+export default () => (
+  <HandleTransition>
+    <ProviderPage />
+  </HandleTransition>
+);

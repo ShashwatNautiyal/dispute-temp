@@ -1,6 +1,7 @@
 import type { Component } from "solid-js";
 
 import MapBox from "@/components/MapBox";
+import HandleTransition from "@/components/HandleTransition";
 
 const HomePage: Component = () => {
   return (
@@ -10,4 +11,8 @@ const HomePage: Component = () => {
   );
 };
 
-export default HomePage;
+export default () => (
+  <HandleTransition>
+    <HomePage />
+  </HandleTransition>
+);

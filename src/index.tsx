@@ -11,6 +11,7 @@ import { Router, Routes, Route, useLocation, A } from "@solidjs/router";
 import Modal from "@/components/Modal";
 import AppBar from "@/components/AppBar";
 import AppIcon from "@/components/AppIcon";
+import MainLoader from "@/components/MainLoader";
 
 const App: Component = () => {
   const location = useLocation();
@@ -39,6 +40,9 @@ const App: Component = () => {
         <A href="/provider">
           <AppIcon active={location.pathname.includes("/provider")} letter="P" showNotifications={false} />
         </A>
+        <A href="/charts">
+          <AppIcon active={location.pathname.includes("/charts")} letter="C" showNotifications={false} />
+        </A>
 
         <AppIcon active={false} letter="U" showNotifications={false} />
         <AppIcon active={false} letter="F" showNotifications={false} />
@@ -59,13 +63,19 @@ const App: Component = () => {
         <AppIcon active={false} letter="P" showNotifications={false} />
       </AppBar>
 
-      <Routes>
-        <Route path="/" component={lazy(() => import("@/pages/index"))} />
-        <Route path="/provider" component={lazy(() => import("@/pages/provider"))}>
-          <Route path="/" />
-          <Route path="/:id" component={lazy(() => import("@/pages/provider/[id]"))} />
-        </Route>
-      </Routes>
+      <div class="relative w-full">
+        <Routes>
+          <Route path="/" component={lazy(() => import("@/pages/index"))} />
+          <Route path="/charts" component={lazy(() => import("@/pages/charts"))} />
+          <Route path="/provider" component={lazy(() => import("@/pages/provider"))}>
+            <Route path="/" />
+            <Route path="/:id" component={lazy(() => import("@/pages/provider/[id]"))} />
+          </Route>
+        </Routes>
+
+        <MainLoader />
+      </div>
+
     </div>
 
     <Modal open={showModal()} onClose={() => setShowModal(false)}>
