@@ -8,7 +8,7 @@ const AppIcon: Component<{ active: boolean, letter: string, showNotifications: b
   return (
     <div class="flex items-center gap-1 group">
       <AppIndicatorBar active={props.active} />
-      <div class="relative h-[44px] w-[44px] bg-black text-white flex justify-center items-center transition-[border-radius]"
+      <div class="relative flex-shrink-0 h-[44px] w-[44px] bg-black text-white flex justify-center items-center transition-[border-radius]"
         classList={{
           "rounded-[22px] group-hover:rounded-xl": !props.active,
           "rounded-xl": props.active

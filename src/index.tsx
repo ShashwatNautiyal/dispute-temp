@@ -5,27 +5,27 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import type { Component } from "solid-js";
 import { render } from 'solid-js/web';
 
-import { lazy, createSignal } from "solid-js";
+import { lazy } from "solid-js";
 import { Router, Routes, Route, useLocation, A } from "@solidjs/router";
 
-import Modal from "@/components/Modal";
 import AppBar from "@/components/AppBar";
 import AppIcon from "@/components/AppIcon";
 import MainLoader from "@/components/MainLoader";
 
+import TransactionsModal from "@/components/modals/TransactionsModal";
+
 const App: Component = () => {
   const location = useLocation();
-  const [showModal, setShowModal] = createSignal(false);
 
   return (
     <>
-    <div class="h-screen w-screen flex">
+    <div class="h-screen w-screen flex divide-x divide-[#EDEDEF]">
       <AppBar>
         <A href="/">
           <AppIcon active={location.pathname === "/"} letter="H" showNotifications={false} />
         </A>
         
-        <button onClick={() => setShowModal(true)} class="group pl-2">
+        <button onClick={() => TransactionsModal.setVisiblity(true)} class="group pl-2">
           <div class="relative h-[44px] w-[44px] bg-[#f5f5f5] text-white flex justify-center items-center rounded-[22px] group-hover:rounded-xl transition-[border-radius]">
             <div class="h-[20px] w-[20px] flex justify-center items-center">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -66,7 +66,6 @@ const App: Component = () => {
       <div class="relative w-full">
         <Routes>
           <Route path="/" component={lazy(() => import("@/pages/index"))} />
-          <Route path="/charts" component={lazy(() => import("@/pages/charts"))} />
           <Route path="/provider" component={lazy(() => import("@/pages/provider"))}>
             <Route path="/" />
             <Route path="/:id" component={lazy(() => import("@/pages/provider/[id]"))} />
@@ -77,15 +76,8 @@ const App: Component = () => {
       </div>
 
     </div>
-
-    <Modal open={showModal()} onClose={() => setShowModal(false)}>
-      <div class="bg-white w-[500px] h-[600px] rounded-[32px] p-2">
-
-        <h1>Hello modal!</h1>
-        <button onClick={() => setShowModal(false)}>Close modal</button>
-      </div>
-    </Modal>
-
+    
+    <TransactionsModal.Component />
     </>
   )
 };

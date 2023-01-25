@@ -16,7 +16,7 @@ const Header: Component<{
         <p class="text-[15px] leading-5 font-normal text-[#86868B]">{props.description}</p>
       </div>
       <div>
-        <button class="text-[13px] leading-5 font-medium py-1 px-2 rounded-[16px] border border-blue-400 text-blue-400"
+        <button class="text-[13px] leading-5 font-medium py-[2px] px-2 rounded-[16px] border border-blue-400 text-blue-400"
           onClick={props.onActionPress}
         >
           {props.actionName}

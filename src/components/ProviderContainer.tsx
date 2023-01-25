@@ -1,7 +1,7 @@
 import type { Component } from "solid-js";
 
 export const ProviderIconLarge = () => (
-  <div class="h-[64px] w-[64px] flex justify-center items-center rounded-[16px] outline outline-[1px] outline-[#f0f0f0]">
+  <div class="h-[64px] w-[64px] flex justify-center items-center rounded-[16px] outline outline-[1px] outline-[#86868B]">
     <div class="bg-black w-[48px] h-[48px]"></div>
   </div>
 )

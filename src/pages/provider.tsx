@@ -18,8 +18,8 @@ const ProviderPage: Component = () => {
   );
 
   return (
-    <main class="flex w-full">
-      <div class="flex flex-col flex-shrink-0">
+    <main class="flex w-full h-full">
+      <div class="flex flex-col flex-shrink-0 h-full border-r border-r-[#EDEDEF]">
         <div class="p-2">
           <Search placeholder="Search Transactions"
             value={searchValue()}
