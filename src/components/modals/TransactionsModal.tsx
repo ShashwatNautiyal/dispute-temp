@@ -6,6 +6,7 @@ import Search from "@/components/Search";
 
 import Header from "@/components/Header";
 import ProviderContainer from "@/components/ProviderContainer";
+import TransactionCard from "@/components/TransactionCard";
 
 const [showModal, setShowModal] = createSignal(false);
 
@@ -53,14 +54,43 @@ const TransactionsModal: Component = () => {
                 onActionPress={() => void 0}
               />
             </div>
-            <div class="p-2 overflow-hidden hover:overflow-y-scroll">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias modi accusamus commodi itaque in natus nihil praesentium blanditiis quia sequi dolores nobis beatae illo, consequuntur possimus culpa. Beatae, cupiditate dolores!
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias modi accusamus commodi itaque in natus nihil praesentium blanditiis quia sequi dolores nobis beatae illo, consequuntur possimus culpa. Beatae, cupiditate dolores!
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias modi accusamus commodi itaque in natus nihil praesentium blanditiis quia sequi dolores nobis beatae illo, consequuntur possimus culpa. Beatae, cupiditate dolores!
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias modi accusamus commodi itaque in natus nihil praesentium blanditiis quia sequi dolores nobis beatae illo, consequuntur possimus culpa. Beatae, cupiditate dolores!
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias modi accusamus commodi itaque in natus nihil praesentium blanditiis quia sequi dolores nobis beatae illo, consequuntur possimus culpa. Beatae, cupiditate dolores!
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias modi accusamus commodi itaque in natus nihil praesentium blanditiis quia sequi dolores nobis beatae illo, consequuntur possimus culpa. Beatae, cupiditate dolores!
-            
+            <div class="p-2 overflow-hidden hover:overflow-y-scroll flex flex-col gap-2">
+              <TransactionCard
+                data={{
+                  flowCount: 2,
+                  lastEditTime: "2 days ago",
+                  name: "**** 1234",
+                  totalVideos: 2
+                }}
+                onCardClick={() => void 0}
+              />
+              <TransactionCard
+                data={{
+                  flowCount: 2,
+                  lastEditTime: "2 days ago",
+                  name: "**** 1234",
+                  totalVideos: 2
+                }}
+                onCardClick={() => void 0}
+              />
+              <TransactionCard
+                data={{
+                  flowCount: 2,
+                  lastEditTime: "2 days ago",
+                  name: "**** 1234",
+                  totalVideos: 2
+                }}
+                onCardClick={() => void 0}
+              />
+              <TransactionCard
+                data={{
+                  flowCount: 2,
+                  lastEditTime: "2 days ago",
+                  name: "**** 1234",
+                  totalVideos: 2
+                }}
+                onCardClick={() => void 0}
+              />
             </div>
           </div>
         </div>
