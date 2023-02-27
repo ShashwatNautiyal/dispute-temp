@@ -35,6 +35,7 @@ specifiers:
   workbox-precaching: ^6.5.4
   workbox-routing: ^6.5.4
   workbox-strategies: ^6.5.4
+  workbox-window: ^6.5.4
 
 dependencies:
   '@motionone/solid': 10.15.5_solid-js@1.6.6
@@ -66,13 +67,14 @@ devDependencies:
   typescript: 4.9.4
   vite: 4.0.3
   vite-plugin-pages: 0.28.0_vite@4.0.3
-  vite-plugin-pwa: 0.14.4_vite@4.0.3
+  vite-plugin-pwa: 0.14.4_kd2yym7bvosszn2volak4ngp5q
   vite-plugin-solid: 2.5.0_solid-js@1.6.6+vite@4.0.3
   workbox-cacheable-response: 6.5.4
   workbox-expiration: 6.5.4
   workbox-precaching: 6.5.4
   workbox-routing: 6.5.4
   workbox-strategies: 6.5.4
+  workbox-window: 6.5.4
 
 packages:
 
@@ -11980,10 +11982,11 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-pwa/0.14.4_vite@4.0.3:
+  /vite-plugin-pwa/0.14.4_kd2yym7bvosszn2volak4ngp5q:
     resolution: {integrity: sha512-M7Ct0so8OlouMkTWgXnl8W1xU95glITSKIe7qswZf1tniAstO2idElGCnsrTJ5NPNSx1XqfTCOUj8j94S6FD7Q==}
     peerDependencies:
       vite: ^3.1.0 || ^4.0.0
+      workbox-window: ^6.5.4
     dependencies:
       '@rollup/plugin-replace': 5.0.2_rollup@3.8.1
       debug: 4.3.4
