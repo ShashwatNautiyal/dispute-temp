@@ -21,7 +21,8 @@ const TransactionsModal: Component = () => {
             <div class="p-2">
               <Search placeholder="Search Transactions" />
             </div>
-            <div class="p-2 overflow-y-hidden mr-[var(--scrollbar-width)] hover:overflow-y-scroll hover:mr-0">
+            <div class="p-2 flex flex-col gap-0.5 overflow-y-hidden mr-[var(--scrollbar-width)] hover:overflow-y-scroll hover:mr-0">
+              <ProviderContainer name="All" count={2} />
               <ProviderContainer name="Stripe" count={2} />
               <ProviderContainer name="Stripe" count={2} />
               <ProviderContainer name="Stripe" count={2} />

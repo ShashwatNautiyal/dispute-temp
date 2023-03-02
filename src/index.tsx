@@ -4,11 +4,13 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 import type { Component } from "solid-js";
 import { render } from 'solid-js/web';
+import { Show, lazy } from "solid-js";
 
 import { Router, useRoutes, useLocation, A } from "@solidjs/router";
 import routes from "~solid-pages";
 
-import { setUser, user } from "@/stores/user";
+import { user } from "@/stores/user";
+const Onboarding = lazy(() => import("@/components/Onboarding"));
 
 import AppBar from "@/components/AppBar";
 import AppIcon from "@/components/AppIcon";
@@ -16,7 +18,6 @@ import MainLoader from "@/components/MainLoader";
 
 import PWAUpdater from "@/components/modals/PWAUpdater";
 import TransactionsModal from "@/components/modals/TransactionsModal";
-import { Show } from "solid-js";
 
 const App: Component = () => {
   const Routes = useRoutes(routes);
@@ -25,7 +26,7 @@ const App: Component = () => {
   return (
     <>
       <Show when={user.loggedIn}
-        fallback={() => <button onClick={() => setUser("loggedIn", true)}>Login</button>}
+        fallback={<Onboarding />}
       >
         <div class="h-screen w-screen flex divide-x divide-[#EDEDEF]">
           <AppBar>
