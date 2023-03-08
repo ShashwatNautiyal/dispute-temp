@@ -1,12 +1,13 @@
-import { Component, For } from "solid-js";
+import { Component, createMemo, For } from "solid-js";
 
 import { Motion } from "@motionone/solid";
 import { Switch, Match, createSignal } from "solid-js";
+import MapBox from "@/components/MapBox";
 
 import Search from "@/components/Search";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import ProviderContainer from "@/components/ProviderContainer";
-import TransactionCard from "@/components/TransactionCard";
+// import TransactionCard from "@/components/TransactionCard";
 
 import UsaMapImage from "@/assets/images/usa-map.png";
 import DisputeLogo from "@/assets/icons/DisputeLogo";
@@ -20,7 +21,6 @@ const [onboardingStep, setOnboardingStep] = createSignal<
 const OnboardingStepWelcome: Component = () => (
   <div class="h-full w-full flex items-center justify-center">
     <Motion.div class="absolute m-auto flex flex-col items-center gap-4"
-      // initial={{ opacity: 0, y: 0 }}
       animate={{ opacity: [0, 1], y: [0, -80] }}
       transition={{ duration: 2, opacity: { offset: [0, 0.25] }, y: { offset: [0.8, 1] } }}
     >
@@ -49,67 +49,93 @@ const OnboardingStepWelcome: Component = () => (
   </div>
 );
 
-const OnboardingStepPaymentProcessors: Component = () => (
-  <div class="flex divide-x h-full">
-    <div class="flex flex-col flex-shrink-0 divide-y h-full">
-      <div class="p-2">
-        <Search placeholder="Search processors" />
-      </div>
-      <div class="p-2 flex flex-col gap-0.5 overflow-y-hidden mr-[var(--scrollbar-width)] hover:overflow-y-scroll hover:mr-0">
-        <ProviderContainer name="All" count={3} />
-        <ProviderContainer name="Stripe" count={2} />
-        <ProviderContainer name="Braintree" count={2} />
-        <ProviderContainer name="Square" count={2} />
-        <ProviderContainer name="Squarespace" count={2} />
-        <ProviderContainer name="Woocommerce" count={2} />
-        <ProviderContainer name="TSYS" count={2} />
-      </div>
-    </div>
+const OnboardingStepPaymentProcessors: Component = () => {
+  const [searchValue, setSearchValue] = createSignal("");
 
-    <div class="flex flex-col w-full">
-      <div class="relative bg-[#F2F2F2] h-[234px]">
-        <div class="absolute bottom-6 left-3 flex flex-col gap-2">
-          <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">Payment processors</h2>
-          <p class="text-[#494949] font-normal text-[15px] leading-6">Choose, Connect and Protect your business.</p>
+  const PROVIDERS = [
+    { name: "Stripe", count: 2 },
+    { name: "Braintree", count: 2 },
+    { name: "Square", count: 2 },
+    { name: "Squarespace", count: 2 },
+    { name: "Woocommerce", count: 2 },
+    { name: "TSYS", count: 2 },
+  ]
+
+  const filtered_providers = createMemo(() => searchValue() ?
+    PROVIDERS.filter(
+      item => item.name.toLowerCase().includes(searchValue().toLowerCase())
+    ) : PROVIDERS
+  );
+
+  return (
+    <div class="flex divide-x h-full">
+      <div class="flex flex-col flex-shrink-0 divide-y h-full">
+        <div class="p-2">
+          <Search placeholder="Search processors"
+            value={searchValue()}
+            onInput={(evt) => setSearchValue(evt.currentTarget.value)}
+          />
+        </div>
+        <div class="p-2 flex flex-col gap-0.5 overflow-y-hidden mr-[var(--scrollbar-width)] hover:overflow-y-scroll hover:mr-0">
+          <ProviderContainer name="All" count={PROVIDERS.length} />
+          <For each={filtered_providers()}>
+            {(provider) => (
+              <ProviderContainer name={provider.name} count={provider.count} />
+            )}
+          </For>
         </div>
       </div>
 
-      <div class="p-3 flex flex-col gap-3">
-        <For each={Array(3).fill(null)}>
-          {() => (
-            <>
-              <div class="flex justify-between items-center">
-                <div class="flex gap-1">
-                  <div class="h-[24px] w-[24px] flex justify-center items-center">
-                    <StripeLogo />
+      <div class="flex flex-col w-full">
+        <div class="relative bg-[#F2F2F2] h-[234px]">
+          <div class="absolute bottom-6 left-3 flex flex-col gap-2">
+            <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">Payment processors</h2>
+            <p class="text-[#494949] font-normal text-[15px] leading-6">Choose, Connect and Protect your business.</p>
+          </div>
+        </div>
+
+        <div class="p-3 flex flex-col gap-3">
+          <For each={Array(3).fill(null)}>
+            {() => (
+              <>
+                <div class="flex justify-between items-center">
+                  <div class="flex gap-1">
+                    <div class="h-[24px] w-[24px] flex justify-center items-center">
+                      <StripeLogo />
+                    </div>
+                    <div class="flex flex-col gap-0.5">
+                      <h4 class="font-medium text-[15px] leading-6 text-[#1D1D1F]">Stripe</h4>
+                      <p class="font-normal text-[13px] leading-6 text-[#494949]">Connect your Stripe accounts</p>
+                    </div>
                   </div>
-                  <div class="flex flex-col gap-0.5">
-                    <h4 class="font-medium text-[15px] leading-6 text-[#1D1D1F]">Stripe</h4>
-                    <p class="font-normal text-[13px] leading-6 text-[#494949]">Connect your Stripe accounts</p>
-                  </div>
+
+                  <button type="button" onClick={() => void 0}
+                    class="text-[#187FE7] font-medium text-[13px] leading-3 px-4 py-2"
+                  >
+                    Connect
+                  </button>
                 </div>
 
-                <button type="button" onClick={() => void 0}
-                  class="text-[#187FE7] font-medium text-[13px] leading-3 px-4 py-2"
-                >
-                  Connect
-                </button>
-              </div>
-
-              <hr />
-            </>
-          )}
-        </For>
+                <hr />
+              </>
+            )}
+          </For>
+        </div>
       </div>
     </div>
-  </div>
-)
+  );
+};
 
 const Onboarding: Component = () => {
   return (
     <div class="min-h-screen flex items-center justify-center bg-fixed bg-center bg-no-repeat bg-cover p-2"
-      style={{ "background-image": `url("${UsaMapImage}")` }}
     >
+      <div class="absolute inset-0 h-full w-full -z-10">
+        <MapBox
+          accessToken="pk.eyJ1IjoiYmh1bWFuIiwiYSI6ImNsYm5teG5oYTAyam0zbmxoOXg1NDQ5cDEifQ.yRnnevMJJVSEnRU1RwmYjQ"
+        />
+      </div>
+
       <div class="relative bg-white max-w-[750px] w-full h-[600px] shadow-xl transition-[border-radius] overflow-hidden"
         classList={{
           "rounded-3xl": onboardingStep() === "WELCOME",
