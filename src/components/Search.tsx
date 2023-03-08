@@ -25,7 +25,7 @@ const Search: Component<{
   value?: string,
   onInput?: JSX.EventHandler<HTMLInputElement, InputEvent>
 }> = (props) => (
-  <div class="px-2 py-1 rounded-[8px] flex items-center gap-2 bg-[#f5f5f5]">
+  <div class="px-2 py-1 rounded-[8px] flex items-center gap-2 bg-[#f5f5f5] border border-[#1d1d1f]/20 focus-within:border-[#187FE7] focus-within:outline-[#187FE7]/20 focus-within:outline-2 focus-within:shadow-[0_0_0_2px_rgb(24,127,231,.2)]">
     <div class="flex items-center justify-center gap-1 w-full min-w-[148px]">
       <div class="h-[24px] w-[24px] flex items-center justify-center text-[#86868B]">
         <SearchIcon />
