@@ -95,8 +95,6 @@ const TransactionsModal: Component = () => {
             </div>
           </div>
         </div>
-
-        
       </div>
     </Modal>
   );
