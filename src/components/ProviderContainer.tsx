@@ -25,7 +25,7 @@ export const ProviderName: Component<{ name: string }> = (props) => (
 export const ProviderCount: Component<{ name: string, count: number }> = (props) => (
   <div class="flex gap-2 items-center justify-between">
     <ProviderName name={props.name} />
-    <p class="text-[15px] leading-5 font-medium">{props.count}</p>
+    <p class="text-[15px] leading-5 font-normal">{props.count}</p>
   </div>
 );
 
