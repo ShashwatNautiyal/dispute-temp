@@ -112,20 +112,53 @@ const OnboardingStepPaymentProcessors: Component = () => {
 
   const PaymentProcessor: Component<{
     name: string
-  }> = (props) => (
-    <>
-      <div class="relative bg-[#F2F2F2] h-[234px]">
-        <div class="absolute bottom-6 left-3 flex flex-col gap-2">
-          <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">{props.name}</h2>
-          <p class="text-[#494949] font-normal text-[15px] leading-6">Choose, Connect and Protect your business.</p>
-        </div>
-      </div>
+  }> = (props) => {
 
-      <div class="p-3 flex flex-col gap-3">
-        <p>Content for the {props.name} provider goes here.</p>
+    const InputContainer: Component<{
+      type: "text" | "tel",
+      placeholder: string
+    }> = (props) => (
+      <div class="w-full py-3 px-2">
+        <input type={props.type} class="bg-transparent w-full outline-none placeholder:text-[#1D1D1F99] text-[#1D1D1F] text-[15px] leading-[18px] font-normal"
+          placeholder={props.placeholder}
+        />
       </div>
-    </>
-  )
+    );
+    
+    return (
+      <>
+        <div class="flex-shrink-0 relative bg-[#F2F2F2] h-[234px]">
+          <div class="absolute bottom-6 left-3 flex flex-col gap-2">
+            <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">{props.name}</h2>
+            <p class="text-[#494949] font-normal text-[15px] leading-6">Add and manage your {props.name} accounts.</p>
+          </div>
+        </div>
+
+        <div class="p-3 flex items-center justify-center h-full">
+          <div class="flex flex-col gap-2 h-[160px] w-[356px]">
+            <p class="text-black font-medium text-[15px] leading-[18px]">
+              Contact details
+            </p>
+
+            <div class="flex flex-col border border-[#1D1D1F1F] divide-y divide-[#1D1D1F1F] rounded-lg">
+              <InputContainer
+                type="text"
+                placeholder="Full name"
+              />
+              <InputContainer
+                type="tel"
+                placeholder="Phone"
+              />
+              <InputContainer
+                type="text"
+                placeholder="Address"
+              />
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   return (
     <div class="flex divide-x h-full">
