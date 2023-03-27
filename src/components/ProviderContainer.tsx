@@ -29,13 +29,16 @@ export const ProviderCount: Component<{ name: string, count: number }> = (props)
   </div>
 );
 
-const ProviderContainer: Component<{ name: string, count: number }> = (props) => (
-  <div class="px-2 py-1 rounded-lg bg-[#ffffff] hover:bg-[#f5f5f5]">
+const ProviderContainer: Component<{ name: string, count: number, onClick?: () => void, active?: boolean }> = (props) => (
+  <button type="button" class="px-2 py-1 rounded-lg hover:bg-[#f5f5f5]"
+    classList={{ "bg-[#ffffff]": !props.active, "bg-[#f5f5f5]": props.active }}
+    onClick={() => props.onClick && props.onClick()}
+  >
     <ProviderCount
       name={props.name}
       count={props.count}
     />
-  </div>
+  </button>
 );
 
 export default ProviderContainer;

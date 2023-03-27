@@ -1,7 +1,7 @@
-import { Component, createMemo, For } from "solid-js";
+import type { Component } from "solid-js";
 
 import { Motion } from "@motionone/solid";
-import { Switch, Match, createSignal } from "solid-js";
+import { createMemo, For, Switch, Match, createSignal, Show } from "solid-js";
 import MapBox from "@/components/MapBox";
 
 import Search from "@/components/Search";
@@ -51,7 +51,7 @@ const OnboardingStepWelcome: Component = () => (
 
 const OnboardingStepPaymentProcessors: Component = () => {
   const [searchValue, setSearchValue] = createSignal("");
-
+  
   const PROVIDERS = [
     { name: "Stripe", count: 2 },
     { name: "Braintree", count: 2 },
@@ -59,13 +59,73 @@ const OnboardingStepPaymentProcessors: Component = () => {
     { name: "Squarespace", count: 2 },
     { name: "Woocommerce", count: 2 },
     { name: "TSYS", count: 2 },
-  ]
+  ] as const;
 
-  const filtered_providers = createMemo(() => searchValue() ?
+  const [selectedProvider, setSelectedProvider] = createSignal<"All" | typeof PROVIDERS[number]["name"]>("All");
+
+  const filtered_providers = createMemo(() => [
+    { name: "All", count: PROVIDERS.length } as const,
+    ...(searchValue() ?
     PROVIDERS.filter(
       item => item.name.toLowerCase().includes(searchValue().toLowerCase())
-    ) : PROVIDERS
+    ) : PROVIDERS)
+  ]);
+
+  const PaymentProcessorAll = () => (
+    <>
+      <div class="relative bg-[#F2F2F2] h-[234px]">
+        <div class="absolute bottom-6 left-3 flex flex-col gap-2">
+          <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">Payment processors</h2>
+          <p class="text-[#494949] font-normal text-[15px] leading-6">Choose, Connect and Protect your business.</p>
+        </div>
+      </div>
+
+      <div class="p-3 flex flex-col gap-3">
+        <For each={Array(3).fill(null)}>
+          {() => (
+            <>
+              <div class="flex justify-between items-center">
+                <div class="flex gap-1">
+                  <div class="h-[24px] w-[24px] flex justify-center items-center">
+                    <StripeLogo />
+                  </div>
+                  <div class="flex flex-col gap-0.5">
+                    <h4 class="font-medium text-[15px] leading-6 text-[#1D1D1F]">Stripe</h4>
+                    <p class="font-normal text-[13px] leading-6 text-[#494949]">Connect your Stripe accounts</p>
+                  </div>
+                </div>
+
+                <button type="button" onClick={() => void 0}
+                  class="text-[#187FE7] font-medium text-[13px] leading-3 px-4 py-2"
+                >
+                  Connect
+                </button>
+              </div>
+
+              <hr />
+            </>
+          )}
+        </For>
+      </div>
+    </>
   );
+
+  const PaymentProcessor: Component<{
+    name: string
+  }> = (props) => (
+    <>
+      <div class="relative bg-[#F2F2F2] h-[234px]">
+        <div class="absolute bottom-6 left-3 flex flex-col gap-2">
+          <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">{props.name}</h2>
+          <p class="text-[#494949] font-normal text-[15px] leading-6">Choose, Connect and Protect your business.</p>
+        </div>
+      </div>
+
+      <div class="p-3 flex flex-col gap-3">
+        <p>Content for the {props.name} provider goes here.</p>
+      </div>
+    </>
+  )
 
   return (
     <div class="flex divide-x h-full">
@@ -77,50 +137,25 @@ const OnboardingStepPaymentProcessors: Component = () => {
           />
         </div>
         <div class="p-2 flex flex-col gap-0.5 overflow-y-hidden mr-[var(--scrollbar-width)] hover:overflow-y-scroll hover:mr-0">
-          <ProviderContainer name="All" count={PROVIDERS.length} />
           <For each={filtered_providers()}>
             {(provider) => (
-              <ProviderContainer name={provider.name} count={provider.count} />
+              <ProviderContainer
+                name={provider.name}
+                count={provider.count}
+                active={selectedProvider() === provider.name}
+                onClick={() => setSelectedProvider(provider.name)}
+              />
             )}
           </For>
         </div>
       </div>
 
       <div class="flex flex-col w-full">
-        <div class="relative bg-[#F2F2F2] h-[234px]">
-          <div class="absolute bottom-6 left-3 flex flex-col gap-2">
-            <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">Payment processors</h2>
-            <p class="text-[#494949] font-normal text-[15px] leading-6">Choose, Connect and Protect your business.</p>
-          </div>
-        </div>
-
-        <div class="p-3 flex flex-col gap-3">
-          <For each={Array(3).fill(null)}>
-            {() => (
-              <>
-                <div class="flex justify-between items-center">
-                  <div class="flex gap-1">
-                    <div class="h-[24px] w-[24px] flex justify-center items-center">
-                      <StripeLogo />
-                    </div>
-                    <div class="flex flex-col gap-0.5">
-                      <h4 class="font-medium text-[15px] leading-6 text-[#1D1D1F]">Stripe</h4>
-                      <p class="font-normal text-[13px] leading-6 text-[#494949]">Connect your Stripe accounts</p>
-                    </div>
-                  </div>
-
-                  <button type="button" onClick={() => void 0}
-                    class="text-[#187FE7] font-medium text-[13px] leading-3 px-4 py-2"
-                  >
-                    Connect
-                  </button>
-                </div>
-
-                <hr />
-              </>
-            )}
-          </For>
-        </div>
+        <Show when={selectedProvider() !== "All"}
+          fallback={<PaymentProcessorAll />}
+        >
+          <PaymentProcessor name={selectedProvider()} />
+        </Show>
       </div>
     </div>
   );
