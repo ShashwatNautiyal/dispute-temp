@@ -1,6 +1,6 @@
 import type { Component } from "solid-js";
 
-import { Motion } from "@motionone/solid";
+import { Motion, Presence } from "@motionone/solid";
 import { createMemo, For, Switch, Match, createSignal, Show } from "solid-js";
 import MapBox from "@/components/MapBox";
 
@@ -12,6 +12,7 @@ import ProviderContainer from "@/components/ProviderContainer";
 import UsaMapImage from "@/assets/images/usa-map.png";
 import DisputeLogo from "@/assets/icons/DisputeLogo";
 import StripeLogo from "@/assets/icons/StripeLogo";
+import { createStore } from "solid-js/store";
 
 const [onboardingStep, setOnboardingStep] = createSignal<
   | "WELCOME"
@@ -113,16 +114,59 @@ const OnboardingStepPaymentProcessors: Component = () => {
   const PaymentProcessor: Component<{
     name: string
   }> = (props) => {
+    enum Steps {
+      CONTACT_DETAILS,
+      BUSINESS_DETAILS,
+      IDK
+    }
+
+    const [currentStep, setCurrentStep] = createSignal<Steps>(Steps.CONTACT_DETAILS);
+
+    const [state, setState] = createStore({
+      contact: {
+        fullName: "",
+        phone: "",
+        address: ""
+      },
+
+      business: {
+        name: "",
+        phone: "",
+        supportEmail: "",
+        websiteUrl: ""
+      }
+    });
 
     const InputContainer: Component<{
-      type: "text" | "tel",
-      placeholder: string
+      type: "text" | "tel" | "email" | "url",
+      placeholder: string,
+      disabled?: boolean,
+      value: string,
+      onValueChange: (value: string) => unknown
     }> = (props) => (
       <div class="w-full py-3 px-2">
-        <input type={props.type} class="bg-transparent w-full outline-none placeholder:text-[#1D1D1F99] text-[#1D1D1F] text-[15px] leading-[18px] font-normal"
-          placeholder={props.placeholder}
-        />
+        <Show when={!props.disabled}
+          fallback={
+            <p class="font-medium">{props.value}</p>
+          }
+        >
+          <input type={props.type} class="bg-transparent w-full outline-none placeholder:text-[#1D1D1F99] text-[#1D1D1F] text-[15px] leading-[18px] font-normal"
+            placeholder={props.placeholder}
+            value={props.value}
+            onInput={(evt) => props.onValueChange(evt.currentTarget.value)}
+          />
+        </Show>
       </div>
+    );
+
+    const NextButton: Component<{
+      onClick: () => void
+    }> = (props) => (
+      <button type="button" class="bg-[#187FE7] py-2 px-4 rounded-3xl text-white font-medium text-[13px] leading-[14px] text-center w-fit ml-auto"
+        onClick={props.onClick}
+      >
+        Next
+      </button>
     );
     
     return (
@@ -134,27 +178,84 @@ const OnboardingStepPaymentProcessors: Component = () => {
           </div>
         </div>
 
-        <div class="p-3 flex items-center justify-center h-full">
-          <div class="flex flex-col gap-2 h-[160px] w-[356px]">
-            <p class="text-black font-medium text-[15px] leading-[18px]">
-              Contact details
-            </p>
+        <div class="p-3 pt-10 flex flex-col gap-8 items-center h-full overflow-auto">
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-2 w-[356px]">
+              <p class="text-black font-medium text-[15px] leading-[18px]">
+                Contact details
+              </p>
 
-            <div class="flex flex-col border border-[#1D1D1F1F] divide-y divide-[#1D1D1F1F] rounded-lg">
-              <InputContainer
-                type="text"
-                placeholder="Full name"
-              />
-              <InputContainer
-                type="tel"
-                placeholder="Phone"
-              />
-              <InputContainer
-                type="text"
-                placeholder="Address"
-              />
+              <div class="flex flex-col border border-[#1D1D1F1F] divide-y divide-[#1D1D1F1F] rounded-lg">
+                <InputContainer
+                  type="text"
+                  placeholder="Full name"
+                  disabled={currentStep() !== Steps.CONTACT_DETAILS}
+                  value={state.contact.fullName}
+                  onValueChange={(value) => setState("contact", "fullName", value)}
+                />
+                <InputContainer
+                  type="tel"
+                  placeholder="Phone"
+                  disabled={currentStep() !== Steps.CONTACT_DETAILS}
+                  value={state.contact.phone}
+                  onValueChange={(value) => setState("contact", "phone", value)}
+                />
+                <InputContainer
+                  type="text"
+                  placeholder="Address"
+                  disabled={currentStep() !== Steps.CONTACT_DETAILS}
+                  value={state.contact.address}
+                  onValueChange={(value) => setState("contact", "address", value)}
+                />
+              </div>
             </div>
+
+            <NextButton onClick={() => setCurrentStep(Steps.BUSINESS_DETAILS)} />
           </div>
+
+          <Show when={currentStep() > 0}>
+            <div class="flex flex-col gap-4 pb-10">
+              <div class="flex flex-col gap-2 w-[356px]">
+                <p class="text-black font-medium text-[15px] leading-[18px]">
+                  Business details
+                </p>
+
+                <div class="flex flex-col border border-[#1D1D1F1F] divide-y divide-[#1D1D1F1F] rounded-lg">
+                  <InputContainer
+                    type="text"
+                    placeholder="Business name"
+                    disabled={currentStep() !== Steps.BUSINESS_DETAILS}
+                    value={state.business.name}
+                    onValueChange={(value) => setState("business", "name", value)}
+                  />
+                  <InputContainer
+                    type="tel"
+                    placeholder="Phone"
+                    disabled={currentStep() !== Steps.BUSINESS_DETAILS}
+                    value={state.business.phone}
+                    onValueChange={(value) => setState("business", "phone", value)}
+                  />
+                  <InputContainer
+                    type="text"
+                    placeholder="Support email"
+                    disabled={currentStep() !== Steps.BUSINESS_DETAILS}
+                    value={state.business.supportEmail}
+                    onValueChange={(value) => setState("business", "supportEmail", value)}
+                  />
+                  <InputContainer
+                    type="url"
+                    placeholder="Website URL"
+                    disabled={currentStep() !== Steps.BUSINESS_DETAILS}
+                    value={state.business.websiteUrl}
+                    onValueChange={(value) => setState("business", "websiteUrl", value)}
+                  />
+                </div>
+              </div>
+
+              <NextButton onClick={() => setCurrentStep(Steps.IDK)} />
+            </div>
+          </Show>
+
         </div>
       </>
     )
