@@ -13,6 +13,7 @@ import UsaMapImage from "@/assets/images/usa-map.png";
 import DisputeLogo from "@/assets/icons/DisputeLogo";
 import StripeLogo from "@/assets/icons/StripeLogo";
 import { createStore } from "solid-js/store";
+import EditIcon from "@/assets/icons/Edit";
 
 const [onboardingStep, setOnboardingStep] = createSignal<
   | "WELCOME"
@@ -191,9 +192,16 @@ const OnboardingStepPaymentProcessors: Component = () => {
             onSubmit={(e) => { e.preventDefault(); setCurrentStep(Steps.BUSINESS_DETAILS) }}
           >
             <div class="flex flex-col gap-2 w-[356px]">
-              <p class="text-black font-medium text-[15px] leading-[18px]">
-                Contact details
-              </p>
+              <div class="flex items-center gap-2">
+                <p class="text-black font-medium text-[15px] leading-[18px]">
+                  Contact details
+                </p>
+                <Show when={currentStep() !== Steps.CONTACT_DETAILS}>
+                  <button type="button" onClick={() => setCurrentStep(Steps.CONTACT_DETAILS)}>
+                    <EditIcon />
+                  </button>
+                </Show>
+              </div>
 
               <div class="flex flex-col border border-[#1D1D1F1F] divide-y divide-[#1D1D1F1F] rounded-lg">
                 <Show when={currentStep() === Steps.CONTACT_DETAILS}
@@ -221,9 +229,7 @@ const OnboardingStepPaymentProcessors: Component = () => {
               </div>
             </div>
 
-            <Show when={currentStep() === Steps.CONTACT_DETAILS}
-              fallback={<EditButton onClick={() => setCurrentStep(Steps.CONTACT_DETAILS)} />}
-            >
+            <Show when={currentStep() === Steps.CONTACT_DETAILS}>
               <NextButton />
             </Show>
           </form>
@@ -233,9 +239,16 @@ const OnboardingStepPaymentProcessors: Component = () => {
               onSubmit={(e) => { e.preventDefault(); setCurrentStep(Steps.IDK) }}
             >
               <div class="flex flex-col gap-2 w-[356px]">
-                <p class="text-black font-medium text-[15px] leading-[18px]">
-                  Business details
-                </p>
+                <div class="flex items-center gap-2">
+                  <p class="text-black font-medium text-[15px] leading-[18px]">
+                    Business details
+                  </p>
+                  <Show when={currentStep() !== Steps.BUSINESS_DETAILS}>
+                    <button type="button" onClick={() => setCurrentStep(Steps.BUSINESS_DETAILS)}>
+                      <EditIcon />
+                    </button>
+                  </Show>
+                </div>
 
                 <div class="flex flex-col border border-[#1D1D1F1F] divide-y divide-[#1D1D1F1F] rounded-lg">
                   <Show when={currentStep() === Steps.BUSINESS_DETAILS}
@@ -269,9 +282,7 @@ const OnboardingStepPaymentProcessors: Component = () => {
                 </div>
               </div>
 
-              <Show when={currentStep() === Steps.BUSINESS_DETAILS}
-                fallback={<EditButton onClick={() => setCurrentStep(Steps.BUSINESS_DETAILS)} />}
-              >
+              <Show when={currentStep() === Steps.BUSINESS_DETAILS}>
                 <NextButton />
               </Show>
             </form>
