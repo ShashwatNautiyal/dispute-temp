@@ -1,4 +1,4 @@
-import type { Component } from "solid-js";
+import { batch, Component, ComponentProps, createEffect, on } from "solid-js";
 
 import { Motion, Presence } from "@motionone/solid";
 import { createMemo, For, Switch, Match, createSignal, Show } from "solid-js";
@@ -7,7 +7,7 @@ import MapBox from "@/components/MapBox";
 import Search from "@/components/Search";
 // import Header from "@/components/Header";
 import ProviderContainer from "@/components/ProviderContainer";
-// import TransactionCard from "@/components/TransactionCard";
+import TransactionCard, { TransactionCardData } from "@/components/TransactionCard";
 
 import UsaMapImage from "@/assets/images/usa-map.png";
 import DisputeLogo from "@/assets/icons/DisputeLogo";
@@ -63,6 +63,16 @@ const OnboardingStepPaymentProcessors: Component = () => {
     { name: "TSYS", count: 2 },
   ] as const;
 
+  const [accountsOnProvider, setAccountsOnProvider] = createStore<Record<
+    typeof PROVIDERS[number]["name"],
+    TransactionCardData[]
+  >>(Object.fromEntries(
+    PROVIDERS.map(provider => [provider.name, [] as TransactionCardData[]])
+  ) as Record<
+    typeof PROVIDERS[number]["name"],
+    TransactionCardData[]
+  >);
+
   const [selectedProvider, setSelectedProvider] = createSignal<"All" | typeof PROVIDERS[number]["name"]>("All");
 
   const filtered_providers = createMemo(() => [
@@ -113,83 +123,84 @@ const OnboardingStepPaymentProcessors: Component = () => {
   );
 
   const PaymentProcessor: Component<{
-    name: string
+    name: typeof PROVIDERS[number]["name"]
   }> = (props) => {
-    enum Steps {
-      CONTACT_DETAILS,
-      BUSINESS_DETAILS,
-      IDK
-    }
+    const [userHasAccountsOnFirstRender, setUserHasAccountsOnFirstRender] = createSignal(accountsOnProvider[props.name].length > 0);
+    createEffect(on(() => props.name, provider_name => {
+      setUserHasAccountsOnFirstRender(accountsOnProvider[provider_name].length > 0);
+    }))
 
-    const [currentStep, setCurrentStep] = createSignal<Steps>(Steps.CONTACT_DETAILS);
-
-    const [state, setState] = createStore({
-      contact: {
-        fullName: "",
-        phone: "",
-        address: ""
-      },
-
-      business: {
-        name: "",
-        phone: "",
-        supportEmail: "",
-        websiteUrl: ""
+    const AddAccountToProcessor: Component = () => {
+      enum Steps {
+        CONTACT_DETAILS,
+        BUSINESS_DETAILS,
+        SUBMIT
       }
-    });
-
-    const InputContainer: Component<{
-      type: "text" | "tel" | "email" | "url",
-      placeholder: string,
-      value: string,
-      onValueChange: (value: string) => unknown
-    }> = (props) => (
-      <div class="w-full py-3 px-2">
-        <input required type={props.type} class="bg-transparent w-full outline-none placeholder:text-[#1D1D1F99] text-[#1D1D1F] text-[15px] leading-[18px] font-normal"
-          placeholder={props.placeholder}
-          value={props.value}
-          onInput={(evt) => props.onValueChange(evt.currentTarget.value)}
-        />
-      </div>
-    );
-
-    const StepRecapContainer: Component<{ value: string }> = (props) => (
-      <div class="w-full py-3 px-2">
-        <p class="font-medium text-[13px] leading-[16px] truncate">
-          {props.value}
-        </p>
-      </div>
-    )
-
-    const NextButton: Component = () => (
-      <button type="submit"
-        class="bg-[#187FE7] py-2 px-4 rounded-3xl text-white font-medium text-[13px] leading-[14px] text-center w-fit ml-auto"
-      >
-        Next
-      </button>
-    );
-
-    const EditButton: Component<{ onClick: () => void }> = (props) => (
-      <button type="button"
-        onClick={props.onClick}
-        class="bg-[#187FE7] py-2 px-4 rounded-3xl text-white font-medium text-[13px] leading-[14px] text-center w-fit ml-auto"
-      >
-        Edit
-      </button>
-    );
-
-    return (
-      <>
-        <div class="flex-shrink-0 relative bg-[#F2F2F2] h-[234px]">
-          <div class="absolute bottom-6 left-3 flex flex-col gap-2">
-            <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">{props.name}</h2>
-            <p class="text-[#494949] font-normal text-[15px] leading-6">Add and manage your {props.name} accounts.</p>
-          </div>
+  
+      const [currentStep, setCurrentStep] = createSignal<Steps>(Steps.CONTACT_DETAILS);
+  
+      const defaultState = {
+        contact: {
+          fullName: "",
+          phone: "",
+          address: ""
+        },
+  
+        business: {
+          name: "",
+          phone: "",
+          supportEmail: "",
+          websiteUrl: ""
+        }
+      };
+  
+      const [state, setState] = createStore(defaultState);
+  
+      const InputContainer: Component<{
+        type: "text" | "tel" | "email" | "url",
+        placeholder: string,
+        value: string,
+        onValueChange: (value: string) => unknown
+      }> = (props) => (
+        <div class="w-full py-3 px-2">
+          <input required type={props.type} class="bg-transparent w-full outline-none placeholder:text-[#1D1D1F99] text-[#1D1D1F] text-[15px] leading-[18px] font-normal"
+            placeholder={props.placeholder}
+            value={props.value}
+            onInput={(evt) => props.onValueChange(evt.currentTarget.value)}
+          />
         </div>
-
-        <div class="p-3 pt-10 flex flex-col gap-8 items-center h-full overflow-auto"
-          style={{ "scrollbar-gutter": "stable" }}
+      );
+  
+      const StepRecapContainer: Component<{ value: string }> = (props) => (
+        <div class="w-full py-3 px-2">
+          <p class="font-medium text-[13px] leading-[16px] truncate">
+            {props.value}
+          </p>
+        </div>
+      );
+  
+      const NextButton: Component = () => (
+        <button type="submit"
+          class="bg-[#187FE7] py-2 px-4 rounded-3xl text-white font-medium text-[13px] leading-[14px] text-center w-fit ml-auto"
         >
+          Next
+        </button>
+      );
+  
+      const addAccountFromState = () => batch(() => {
+        setAccountsOnProvider(props.name, prev => [...prev, {
+          flowCount: 2,
+          lastEditTime: "1 min ago",
+          name: "**** 1234",
+          totalVideos: 2
+        }]);
+  
+        setState(defaultState);
+        setUserHasAccountsOnFirstRender(true);
+      });
+  
+      return (
+        <>
           <form class="flex flex-col gap-4"
             onSubmit={(e) => { e.preventDefault(); setCurrentStep(Steps.BUSINESS_DETAILS) }}
           >
@@ -238,7 +249,7 @@ const OnboardingStepPaymentProcessors: Component = () => {
 
           <Show when={currentStep() > 0}>
             <form class="flex flex-col gap-4 pb-10"
-              onSubmit={(e) => { e.preventDefault(); setCurrentStep(Steps.IDK) }}
+              onSubmit={(e) => { e.preventDefault(); setCurrentStep(Steps.SUBMIT) }}
             >
               <div class="flex flex-col gap-2 w-[356px]">
                 <div class="flex items-center gap-2">
@@ -290,7 +301,49 @@ const OnboardingStepPaymentProcessors: Component = () => {
             </form>
           </Show>
 
+          <Show when={currentStep() > 1}>
+            <button type="button"
+              onClick={() => addAccountFromState()}
+              class="bg-[#187FE7] py-2 px-4 rounded-3xl text-white font-medium text-[13px] leading-[14px] text-center w-fit mx-auto"
+            >
+              Add account
+            </button>
+          </Show>
+        </>
+      )
+    }
+
+    return (
+      <>
+        <div class="flex-shrink-0 relative bg-[#F2F2F2] h-[234px]">
+          <div class="absolute bottom-6 left-3 flex flex-col gap-2">
+            <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">{props.name}</h2>
+            <p class="text-[#494949] font-normal text-[15px] leading-6">Add and manage your {props.name} accounts.</p>
+          </div>
         </div>
+        
+        <Show when={userHasAccountsOnFirstRender()}
+          fallback={
+            <div class="p-3 pt-10 flex flex-col gap-8 items-center h-full overflow-auto"
+              style={{ "scrollbar-gutter": "stable" }}
+            >
+              <AddAccountToProcessor />
+            </div>
+          }
+        >
+          <div class="p-2 overflow-hidden hover:overflow-y-scroll flex flex-col gap-2"
+            style={{ "scrollbar-gutter": "stable" }}
+          >
+            <For each={accountsOnProvider[props.name]}>
+              {account_data => (
+                <TransactionCard
+                  data={account_data}
+                  onCardClick={() => void 0}
+                />
+              )}
+            </For>
+          </div>
+        </Show>
       </>
     )
   }
@@ -322,7 +375,7 @@ const OnboardingStepPaymentProcessors: Component = () => {
         <Show when={selectedProvider() !== "All"}
           fallback={<PaymentProcessorAll />}
         >
-          <PaymentProcessor name={selectedProvider()} />
+          <PaymentProcessor name={selectedProvider() as Exclude<ReturnType<typeof selectedProvider>, "All">} />
         </Show>
       </div>
     </div>

@@ -40,7 +40,7 @@ const CardDetails: Component<{
 }> = (props) => (
   <div class="flex items-center gap-1">
     <p class="text-[13px] leading-5 text-[#494949] font-normal">
-      Created {props.lastEditTime}
+      Added {props.lastEditTime}
     </p>
     
     <DotSeparator />
