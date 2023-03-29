@@ -187,7 +187,9 @@ const OnboardingStepPaymentProcessors: Component = () => {
           </div>
         </div>
 
-        <div class="p-3 pt-10 flex flex-col gap-8 items-center h-full overflow-auto">
+        <div class="p-3 pt-10 flex flex-col gap-8 items-center h-full overflow-auto"
+          style={{ "scrollbar-gutter": "stable" }}
+        >
           <form class="flex flex-col gap-4"
             onSubmit={(e) => { e.preventDefault(); setCurrentStep(Steps.BUSINESS_DETAILS) }}
           >
