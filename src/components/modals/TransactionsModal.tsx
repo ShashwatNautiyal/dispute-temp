@@ -9,12 +9,14 @@ import ProviderContainer from "@/components/ProviderContainer";
 import TransactionCard from "@/components/TransactionCard";
 
 const [showModal, setShowModal] = createSignal(false);
+const open = () => setShowModal(true);
+const close = () => setShowModal(false);
 
 const TransactionsModal: Component = () => {
   return (
-    <Modal open={showModal()} onClose={() => setShowModal(false)}>
+    <Modal open={showModal()} onClose={close}>
       <div class="relative bg-white w-[750px] h-[600px] rounded-[16px] overflow-hidden">
-        <button class="absolute top-2 right-2" onClick={() => setShowModal(false)}>Close</button>
+        <button class="absolute top-2 right-2" onClick={close}>Close</button>
         <div class="flex divide-x h-full">
 
           <div class="flex flex-col flex-shrink-0 divide-y h-full">
@@ -101,7 +103,6 @@ const TransactionsModal: Component = () => {
 };
 
 
-export default {
-  Component: TransactionsModal,
-  setVisiblity: setShowModal
-};
+
+export const useTransactionModal = () => [open, close];
+export default TransactionsModal
