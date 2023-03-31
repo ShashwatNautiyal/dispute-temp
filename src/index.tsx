@@ -9,6 +9,8 @@ import { Show, lazy } from "solid-js";
 import { Router, useRoutes, useLocation, A } from "@solidjs/router";
 import routes from "~solid-pages";
 
+import { Presence, Motion } from "@motionone/solid";
+
 import { user } from "@/stores/user";
 const Onboarding = lazy(() => import("@/components/Onboarding"));
 
@@ -18,6 +20,7 @@ import MainLoader from "@/components/MainLoader";
 
 import PWAUpdater from "@/components/modals/PWAUpdater";
 import TransactionsModal from "@/components/modals/TransactionsModal";
+import MapBox from "./components/MapBox";
 
 const App: Component = () => {
   const Routes = useRoutes(routes);
@@ -25,9 +28,21 @@ const App: Component = () => {
 
   return (
     <>
-      <Show when={user.loggedIn}
-        fallback={<Onboarding />}
-      >
+    <Show when={!user.loggedIn || location.pathname === "/"}>
+      <div class="absolute inset-0 h-full w-full -z-10">
+        <MapBox
+          accessToken="pk.eyJ1IjoiYmh1bWFuIiwiYSI6ImNsYm5teG5oYTAyam0zbmxoOXg1NDQ5cDEifQ.yRnnevMJJVSEnRU1RwmYjQ"
+        />
+      </div>
+    </Show>
+
+    <Presence exitBeforeEnter>
+      <Show when={!user.loggedIn}>
+        <Onboarding />
+      </Show>
+    </Presence>
+
+      <Show when={user.loggedIn}>
         <div class="h-screen w-screen flex divide-x divide-[#EDEDEF]">
           <AppBar>
             <A href="/">
@@ -77,6 +92,7 @@ const App: Component = () => {
             <MainLoader />
           </div>
         </div>
+
         <TransactionsModal.Component />
       </Show>
       

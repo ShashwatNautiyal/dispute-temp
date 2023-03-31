@@ -2,22 +2,23 @@ import { batch, Component, ComponentProps, createEffect, on } from "solid-js";
 
 import { Motion, Presence } from "@motionone/solid";
 import { createMemo, For, Switch, Match, createSignal, Show } from "solid-js";
-import MapBox from "@/components/MapBox";
+import { setUser, user } from "@/stores/user";
 
 import Search from "@/components/Search";
 // import Header from "@/components/Header";
 import ProviderContainer from "@/components/ProviderContainer";
 import TransactionCard, { TransactionCardData } from "@/components/TransactionCard";
 
-import UsaMapImage from "@/assets/images/usa-map.png";
 import DisputeLogo from "@/assets/icons/DisputeLogo";
 import StripeLogo from "@/assets/icons/StripeLogo";
 import { createStore } from "solid-js/store";
 import EditIcon from "@/assets/icons/Edit";
 
+const [showOnboardingContent, setShowOnboardingContent] = createSignal(true);
 const [onboardingStep, setOnboardingStep] = createSignal<
   | "WELCOME"
   | "PAYMENT_PROCESSORS"
+  | "VOID"
 >("WELCOME");
 
 const OnboardingStepWelcome: Component = () => (
@@ -188,15 +189,18 @@ const OnboardingStepPaymentProcessors: Component = () => {
       );
   
       const addAccountFromState = () => batch(() => {
-        setAccountsOnProvider(props.name, prev => [...prev, {
-          flowCount: 2,
-          lastEditTime: "1 min ago",
-          name: "**** 1234",
-          totalVideos: 2
-        }]);
+        setShowOnboardingContent(false);
+        setTimeout(() => setUser("loggedIn", true), 500);
+        // TODO: DEBUG: REENABLE AFTER
+        // setAccountsOnProvider(props.name, prev => [...prev, {
+        //   flowCount: 2,
+        //   lastEditTime: "1 min ago",
+        //   name: "**** 1234",
+        //   totalVideos: 2
+        // }]);
   
-        setState(defaultState);
-        setUserHasAccountsOnFirstRender(true);
+        // setState(defaultState);
+        // setUserHasAccountsOnFirstRender(true);
       });
   
       return (
@@ -383,31 +387,63 @@ const OnboardingStepPaymentProcessors: Component = () => {
 };
 
 const Onboarding: Component = () => {
-  return (
-    <div class="min-h-screen flex items-center justify-center bg-fixed bg-center bg-no-repeat bg-cover p-2"
-    >
-      <div class="absolute inset-0 h-full w-full -z-10">
-        <MapBox
-          accessToken="pk.eyJ1IjoiYmh1bWFuIiwiYSI6ImNsYm5teG5oYTAyam0zbmxoOXg1NDQ5cDEifQ.yRnnevMJJVSEnRU1RwmYjQ"
-        />
-      </div>
+  // Run on mount.
+  setShowOnboardingContent(true);
 
-      <div class="relative bg-white max-w-[750px] w-full h-[600px] shadow-xl transition-[border-radius] overflow-hidden"
+  return (
+    <Motion.div initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 2 }}
+      class="fixed flex items-center inset-0 p-2"
+    >
+      <Motion.div class="absolute bg-white max-w-[750px] shadow-xl transition-[border-radius] overflow-hidden"
+        initial={{
+          "transform": "translateX(50%)"
+        }}
+        animate={{
+          "width": !showOnboardingContent() ? 368 + "px" : "100%",
+          "height": !showOnboardingContent() ? 500 + "px" : 600  + "px",
+          "right": !showOnboardingContent() ? "4rem" : "50%",
+          "transform": !showOnboardingContent() ? "translateX(0%)" : "translateX(50%)",
+          // "margin-right": !showOnboardingContent() ? "4rem" : "auto"
+        }}
         classList={{
           "rounded-3xl": onboardingStep() === "WELCOME",
           "rounded-lg": onboardingStep() !== "WELCOME"
         }}
+        transition={{
+          duration: 0.5
+        }}
       >
-        <Switch>
-          <Match when={onboardingStep() === "WELCOME"}>
-            <OnboardingStepWelcome />
-          </Match>
-          <Match when={onboardingStep() === "PAYMENT_PROCESSORS"}>
-            <OnboardingStepPaymentProcessors />
-          </Match>
-        </Switch>
-      </div>
-    </div>
+        <Presence exitBeforeEnter>
+          <Show when={showOnboardingContent()}>
+            <Motion.div class="w-full h-full"
+              initial={{
+                /** 368px is the width of the `Stats` component in `/` route. */
+                // "width": user.loggedIn ? 368 + "px" : "100%",
+                // "height": user.loggedIn ? 800 + "px" : 600  + "px",
+                opacity: 1
+              }}
+              exit={{
+              //   "width": "368px", // user.loggedIn ? 368 + "px" : "100%",
+              //   "height": "800px", // user.loggedIn ? 800 + "px" : 600  + "px",
+                opacity: 0
+              }}
+              transition={{
+                duration: 0.5
+              }}
+            >
+              <Switch>
+                <Match when={onboardingStep() === "WELCOME"}>
+                  <OnboardingStepWelcome />
+                </Match>
+                <Match when={onboardingStep() === "PAYMENT_PROCESSORS"}>
+                  <OnboardingStepPaymentProcessors />
+                </Match>
+              </Switch>
+            </Motion.div>
+          </Show>
+        </Presence>
+      </Motion.div>
+    </Motion.div>
   );
 };
 

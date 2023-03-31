@@ -4,6 +4,7 @@ import { createStore } from 'solid-js/store';
 import { createBarChart } from "micro-charts";
 
 import Outcome from "@/components/Outcome";
+import { Motion } from "@motionone/solid";
 
 const LineChartPercent: Component<{ label: string, percent: number }> = (props) => (
   <div class="grid grid-cols-2 gap-2">
@@ -69,7 +70,11 @@ const Stats: Component = () => {
 
   return (
     <div class="p-6 bg-white rounded-[12px]">
-      <div class="w-[320px] flex flex-col gap-6">
+      <Motion.div class="w-[320px] flex flex-col gap-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <div class="border relative">
           <canvas class="h-full w-full" ref={canvas} />
         </div>
@@ -113,7 +118,7 @@ const Stats: Component = () => {
             percent={75}
           />
         </div>
-      </div>
+      </Motion.div>
     </div>
   );
 };

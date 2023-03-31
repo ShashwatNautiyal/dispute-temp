@@ -1,9 +1,15 @@
 import type { FlowComponent } from "solid-js";
+import { Motion } from "@motionone/solid";
 
 const AppBar: FlowComponent = (props) => (
-  <div class="h-full w-[64px] overflow-hidden hover:overflow-auto flex flex-col gap-[8px] py-[8px] pr-[10px] bg-grey-200 flex-shrink-0">
+  <Motion.div
+    class="h-full bg-white w-[64px] overflow-hidden hover:overflow-auto flex flex-col gap-[8px] py-[8px] pr-[10px] bg-grey-200 flex-shrink-0"
+    initial={{ x: "-100%" }}
+    animate={{ x: 0 }}
+    transition={{ duration: 0.5 }}  
+  >
     {props.children}
-  </div>
+  </Motion.div>
 );
 
 export default AppBar;
