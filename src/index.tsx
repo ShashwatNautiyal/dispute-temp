@@ -43,7 +43,7 @@ const App: Component = () => {
     </Presence>
 
       <Show when={user.loggedIn}>
-        <div class="h-screen w-screen flex divide-x divide-[#EDEDEF]">
+        <div class="h-screen w-screen flex">
           <AppBar>
             <A href="/">
               <AppIcon active={location.pathname === "/"} letter="H" showNotifications={false} />
