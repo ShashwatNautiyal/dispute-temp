@@ -13,6 +13,7 @@ import DisputeLogo from "@/assets/icons/DisputeLogo";
 import StripeLogo from "@/assets/icons/StripeLogo";
 import { createStore } from "solid-js/store";
 import EditIcon from "@/assets/icons/Edit";
+import { TransactionsModalHeader } from "../modals/TransactionsModal";
 
 const [showOnboardingContent, setShowOnboardingContent] = createSignal(true);
 const [onboardingStep, setOnboardingStep] = createSignal<
@@ -319,12 +320,9 @@ const OnboardingStepPaymentProcessors: Component = () => {
 
     return (
       <>
-        <div class="flex-shrink-0 relative bg-[#F2F2F2] h-[234px]">
-          <div class="absolute bottom-6 left-3 flex flex-col gap-2">
-            <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">{props.name}</h2>
-            <p class="text-[#494949] font-normal text-[15px] leading-6">Add and manage your {props.name} accounts.</p>
-          </div>
-        </div>
+        <TransactionsModalHeader
+          name={props.name}
+        />
         
         <Show when={userHasAccountsOnFirstRender()}
           fallback={
