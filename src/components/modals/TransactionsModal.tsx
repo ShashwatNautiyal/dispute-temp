@@ -178,17 +178,20 @@ export const TransactionsModalContent: Component<{
 
         if (!user.accountsOnProvider[props.name]) {
           setUser("accountsOnProvider", props.name, []);
-        } 
+        }
 
-        setUser("accountsOnProvider", props.name, prev => [...prev, {
-          flowCount: 2,
-          lastEditTime: "1 min ago",
-          name: "**** 1234",
-          totalVideos: 2
-        }]);
-  
-        setState(defaultState);
-        setUserHasAccountsOnFirstRender(true);
+        batch(() => {
+          setUser("accountsOnProvider", props.name, prev => [...prev, {
+            flowCount: 2,
+            lastEditTime: "1 min ago",
+            name: "**** 1234",
+            totalVideos: 2
+          }]);
+    
+          setState(defaultState);
+          setUserHasAccountsOnFirstRender(true);
+          setShowAccountToProcessor(false)
+        })
       });
   
       return (
