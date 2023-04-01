@@ -70,36 +70,44 @@ export const TransactionsModalContent: Component<{
 
   const PaymentProcessorAll = () => (
     <>
-      <div class="relative bg-[#F2F2F2] h-[234px]">
+      <div class="flex-shrink-0 relative bg-[#F2F2F2] h-[234px]">
         <div class="absolute bottom-6 left-3 flex flex-col gap-2">
           <h2 class="text-[#1D1D1F] font-semibold text-[24px] leading-9">Payment processors</h2>
           <p class="text-[#494949] font-normal text-[15px] leading-6">Choose, Connect and Protect your business.</p>
         </div>
       </div>
 
-      <div class="p-3 flex flex-col gap-3">
-        <For each={Array(3).fill(null)}>
-          {() => (
+      <div class="overflow-y-auto p-3 flex flex-col gap-3">
+        <For each={PROVIDERS}>
+          {(provider, index) => (
             <>
-              <div class="flex justify-between items-center">
-                <div class="flex gap-1">
-                  <div class="h-[24px] w-[24px] flex justify-center items-center">
-                    <StripeLogo />
+              <div class="bg-white hover:bg-[#F2F2F2] p-2 rounded-lg w-full">
+                <div class="flex justify-between items-center">
+                  <div class="flex gap-1">
+                    <div class="h-[24px] w-[24px] flex justify-center items-center">
+                      <StripeLogo />
+                    </div>
+                    <div class="flex flex-col gap-0.5">
+                      <h4 class="font-medium text-[15px] leading-6 text-[#1D1D1F]">
+                        {provider.name}
+                      </h4>
+                      <p class="font-normal text-[13px] leading-6 text-[#494949]">
+                        Connect your {provider.name} accounts
+                      </p>
+                    </div>
                   </div>
-                  <div class="flex flex-col gap-0.5">
-                    <h4 class="font-medium text-[15px] leading-6 text-[#1D1D1F]">Stripe</h4>
-                    <p class="font-normal text-[13px] leading-6 text-[#494949]">Connect your Stripe accounts</p>
-                  </div>
-                </div>
 
-                <button type="button" onClick={() => void 0}
-                  class="text-[#187FE7] font-medium text-[13px] leading-3 px-4 py-2"
-                >
-                  Connect
-                </button>
+                  <button type="button" onClick={() => setSelectedProvider(provider.name)}
+                    class="text-[#187FE7] font-medium text-[13px] leading-3 px-4 py-2"
+                  >
+                    Connect
+                  </button>
+                </div>
               </div>
 
-              <hr />
+              <Show when={index() !== (PROVIDERS.length-1)}>
+                <hr />
+              </Show>
             </>
           )}
         </For>
