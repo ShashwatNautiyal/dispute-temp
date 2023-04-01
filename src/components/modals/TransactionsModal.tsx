@@ -20,7 +20,9 @@ export const TransactionsModalHeader: Component<{
   name: string,
   description?: string,
   showAddButton?: boolean,
-  onAddButtonClick?: () => unknown
+  onAddButtonClick?: () => unknown,
+  showBackButton?: boolean,
+  onBackButtonClick?: () => unknown
 }> = (props) => (
   <div class="flex-shrink-0 relative bg-[#F2F2F2] h-[234px]">
     <div class="absolute bottom-6 left-3 flex flex-col gap-2">
@@ -36,7 +38,14 @@ export const TransactionsModalHeader: Component<{
         Add
       </button>
     </Show>
-
+    <Show when={props.showBackButton}>
+      <button type="button"
+        onClick={() => props.onBackButtonClick && props.onBackButtonClick()}
+        class="absolute bg-[#187FE7] py-2 px-4 rounded-3xl text-white font-medium text-[13px] leading-[14px] text-center w-fit mx-auto bottom-6 right-3"
+      >
+        Back
+      </button>
+    </Show>
   </div>
 )
 
@@ -322,6 +331,8 @@ export const TransactionsModalContent: Component<{
           name={props.name}
           showAddButton={userHasAccountsOnFirstRender() && !showAddAccountToProcessor()}
           onAddButtonClick={() => setShowAccountToProcessor(true)}
+          showBackButton={userHasAccountsOnFirstRender() && showAddAccountToProcessor()}
+          onBackButtonClick={() => setShowAccountToProcessor(false)}
         />
         
         <Show when={userHasAccountsOnFirstRender()}
