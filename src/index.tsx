@@ -12,7 +12,9 @@ import routes from "~solid-pages";
 import { Presence } from "@motionone/solid";
 
 import { user } from "@/stores/user";
-const Onboarding = lazy(() => import("@/components/Onboarding"));
+
+const AuthOnboarding = lazy(() => import("@/components/AuthOnboarding"));
+const WelcomeOnboarding = lazy(() => import("@/components/WelcomeOnboarding"));
 
 import AppBar from "@/components/AppBar";
 import AppIcon from "@/components/AppIcon";
@@ -30,19 +32,25 @@ const App: Component = () => {
 
   return (
     <>
-    <Show when={!user.loggedIn || location.pathname === "/"}>
-      <div class="absolute inset-0 h-full w-full">
-        <MapBox accessToken="pk.eyJ1IjoiYmh1bWFuIiwiYSI6ImNsYm5teG5oYTAyam0zbmxoOXg1NDQ5cDEifQ.yRnnevMJJVSEnRU1RwmYjQ" />
-      </div>
-    </Show>
-
-    <Presence exitBeforeEnter>
-      <Show when={!user.loggedIn}>
-        <Onboarding />
+      <Show when={!user.loggedIn || location.pathname === "/"}>
+        <div class="absolute inset-0 h-full w-full">
+          <MapBox accessToken="pk.eyJ1IjoiYmh1bWFuIiwiYSI6ImNsYm5teG5oYTAyam0zbmxoOXg1NDQ5cDEifQ.yRnnevMJJVSEnRU1RwmYjQ" />
+        </div>
       </Show>
-    </Presence>
 
-      <Show when={user.loggedIn}>
+      <Presence exitBeforeEnter>
+        <Show when={!user.loggedIn && !user.ready}>
+          <AuthOnboarding />
+        </Show>
+      </Presence>
+
+      <Presence exitBeforeEnter>
+        <Show when={user.loggedIn && !user.ready}>
+          <WelcomeOnboarding />
+        </Show>
+      </Presence>
+
+      <Show when={user.loggedIn && user.ready}>
         <div class="h-screen w-screen flex">
           <AppBar>
             <A href="/">
