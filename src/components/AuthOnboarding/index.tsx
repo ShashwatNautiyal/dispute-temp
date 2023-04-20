@@ -76,12 +76,17 @@ const OnboardingStepEmail: Component = () => (
           value={() => state.email}
           setValue={(value: string) => setState("email", value)}
           onSubmit={async (email) => {
-            const res = await callApiRequestCode(state.email);
-
-            batch(() => {
-              setState("method_id", res.method_id);
-              setOnboardingStep("OTP");
-            })
+            try {
+              const res = await callApiRequestCode(state.email);
+  
+              batch(() => {
+                setState("method_id", res.email_id);
+                setOnboardingStep("OTP");
+              })
+            }
+            catch {
+              console.error("error while asking otp");
+            }
           }}
           disabled={(email, loading) => loading() || !email()}
           placeholder="Your email"
@@ -104,7 +109,6 @@ const OnboardingStepEmail: Component = () => (
   </div>
 );
 
-
 const OnboardingStepOtp: Component = () => {
   const PIN_LENGTH = 6;
 
@@ -115,10 +119,12 @@ const OnboardingStepOtp: Component = () => {
   const onSubmit = async () => {
     const code = pin().join("");
     try {
-      const res = await callApiAuthenticate({
+      const jwt = await callApiAuthenticate({
         code,
         method_id: state.method_id
       });
+
+      console.log("got jwt", jwt);
 
       setUser("loggedIn", true);
     } catch (e) {
