@@ -5,17 +5,24 @@ export const callApiRequestCode = async (email: string) => {
     method: "POST",
     body: JSON.stringify({
       email
-    })
+    }),
+    headers: {
+      "Content-Type": "application/json"
+    }
   });
 
   const data = await response.json();
   return data;
 };
 
-export const callApiAuthenticate = async (request: { method_id: string, code: string }) => {
+export const callApiAuthenticate = async (request: { method_id: string, code: string, email: string }) => {
   const response = await fetch(ENDPOINT + "/authenticate/jwt", {
     method: "POST",
-    body: JSON.stringify(request)
+    body: JSON.stringify(request),
+    headers: {
+      "Content-Type": "application/json",
+      "X-EMAIL": request.email
+    }
   });
 
   const jwt = await response.text();
