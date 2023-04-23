@@ -2,7 +2,7 @@
 import "@/styles/globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { Component, onMount } from "solid-js";
+import type { Component } from "solid-js";
 import { render } from "solid-js/web";
 import { Show, lazy } from "solid-js";
 
@@ -10,8 +10,7 @@ import { Router, useRoutes, useLocation, A } from "@solidjs/router";
 import routes from "~solid-pages";
 
 import { Presence } from "@motionone/solid";
-
-import { setUser, user } from "@/stores/user";
+import { user } from "@/stores/user";
 
 const AuthOnboarding = lazy(() => import("@/components/AuthOnboarding"));
 const WelcomeOnboarding = lazy(() => import("@/components/WelcomeOnboarding"));
@@ -34,7 +33,7 @@ const App: Component = () => {
 
   return (
     <>
-      <Show when={!user.loggedIn || location.pathname === "/"}>
+      <Show when={!user.loggedIn || !user.ready || location.pathname === "/"}>
         <div class="absolute inset-0 h-full w-full">
           <MapBox accessToken="pk.eyJ1IjoiYmh1bWFuIiwiYSI6ImNsYm5teG5oYTAyam0zbmxoOXg1NDQ5cDEifQ.yRnnevMJJVSEnRU1RwmYjQ" />
         </div>
@@ -63,7 +62,7 @@ const App: Component = () => {
               />
             </A>
 
-            <button onClick={openTransactionModal} class="group pl-2">
+            <button onClick={() => openTransactionModal()} class="group pl-2">
               <div class="relative h-[44px] w-[44px] bg-[#f5f5f5] text-white flex justify-center items-center rounded-[22px] group-hover:rounded-xl transition-[border-radius]">
                 <div class="h-[20px] w-[20px] flex justify-center items-center">
                   <svg

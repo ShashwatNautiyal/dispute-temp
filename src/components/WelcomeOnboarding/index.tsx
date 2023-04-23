@@ -1,19 +1,11 @@
-import { batch, Component, ComponentProps, createEffect, on } from "solid-js";
+import type { Component } from "solid-js";
 
 import { Motion, Presence } from "@motionone/solid";
-import { createMemo, For, Switch, Match, createSignal, Show } from "solid-js";
-import { setUser, user } from "@/stores/user";
-
-import Search from "@/components/Search";
-// import Header from "@/components/Header";
-import ProviderContainer from "@/components/ProviderContainer";
-import TransactionCard, { TransactionCardData } from "@/components/TransactionCard";
+import { Switch, Match, createSignal, Show } from "solid-js";
+import { setUser } from "@/stores/user";
 
 import DisputeLogo from "@/assets/icons/DisputeLogo";
-import StripeLogo from "@/assets/icons/StripeLogo";
-import { createStore } from "solid-js/store";
-import EditIcon from "@/assets/icons/Edit";
-import { TransactionsModalContent, TransactionsModalHeader } from "../modals/TransactionsModal";
+import { TransactionsModalContent } from "../modals/TransactionsModal";
 
 const [showOnboardingContent, setShowOnboardingContent] = createSignal(true);
 const [onboardingStep, setOnboardingStep] = createSignal<
