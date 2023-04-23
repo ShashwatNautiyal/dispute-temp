@@ -58,7 +58,7 @@ const OnboardingStepPaymentProcessors: Component = () => {
     <TransactionsModalContent
       onAccountAdd={() => {
         setShowOnboardingContent(false);
-        setTimeout(() => setUser("loggedIn", true), 500);
+        setTimeout(() => setUser("ready", true), 500);
       }}
     />
   )

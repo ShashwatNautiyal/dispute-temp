@@ -32,13 +32,6 @@ const App: Component = () => {
 
   const [openTransactionModal] = useTransactionModal();
 
-  onMount(() => {
-    setUser({
-      loggedIn: false,
-      ready: true,
-    });
-  });
-
   return (
     <>
       <Show when={!user.loggedIn || location.pathname === "/"}>

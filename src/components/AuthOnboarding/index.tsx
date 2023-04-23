@@ -125,7 +125,6 @@ const OnboardingStepOtp: Component = () => {
       });
 
       console.log("got jwt", jwt);
-
       setUser("loggedIn", true);
     } catch (e) {
       setError(
