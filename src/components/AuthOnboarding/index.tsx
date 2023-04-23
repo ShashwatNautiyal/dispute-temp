@@ -121,11 +121,12 @@ const OnboardingStepOtp: Component = () => {
     try {
       const jwt = await callApiAuthenticate({
         code,
+        email: state.email,
         method_id: state.method_id
       });
 
-      console.log("got jwt", jwt);
-      setUser("loggedIn", true);
+      localStorage.setItem("token", jwt);
+      setUser({ loggedIn: true, jwt });
     } catch (e) {
       setError(
         e instanceof Error
