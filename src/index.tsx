@@ -24,10 +24,12 @@ import TransactionsModal, {
   useTransactionModal,
 } from "@/components/modals/TransactionsModal";
 import MapBox from "@/components/MapBox";
+import { getRegisterKey } from "./api/stripe-sync";
 
 const App: Component = () => {
   const Routes = useRoutes(routes);
   const location = useLocation();
+  console.log(getRegisterKey());
 
   const [openTransactionModal] = useTransactionModal();
 

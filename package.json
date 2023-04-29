@@ -43,6 +43,7 @@
   "dependencies": {
     "@motionone/solid": "^10.15.5",
     "@solidjs/router": "^0.8.2",
+    "axios": "^1.4.0",
     "mapbox-gl": "^2.12.0",
     "micro-charts": "^7.5.0",
     "solid-js": "^1.7.3"
