@@ -6,7 +6,13 @@ import type { Component } from "solid-js";
 import { render } from "solid-js/web";
 import { Show, lazy } from "solid-js";
 
-import { Router, useRoutes, useLocation, A } from "@solidjs/router";
+import {
+  Router,
+  useRoutes,
+  useLocation,
+  A,
+  useSearchParams,
+} from "@solidjs/router";
 import routes from "~solid-pages";
 
 import { Presence } from "@motionone/solid";
@@ -24,13 +30,12 @@ import TransactionsModal, {
   useTransactionModal,
 } from "@/components/modals/TransactionsModal";
 import MapBox from "@/components/MapBox";
-import { getRegisterKey } from "./api/stripe-sync";
 
 const App: Component = () => {
   const Routes = useRoutes(routes);
   const location = useLocation();
-  console.log(getRegisterKey());
-
+  const [params] = useSearchParams();
+  console.log({ ...params });
   const [openTransactionModal] = useTransactionModal();
 
   return (
