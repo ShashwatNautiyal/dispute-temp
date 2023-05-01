@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const STRIPE_API_KEY = import.meta.env.VITE_PUBLISHABLE_KEY;
+const STRIPE_API_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 const STRIPE_ENDPOINT = "https://stripesync.vish3794.workers.dev";
 const token = `Bearer eyJhbGciOiJIUzUxMiIsImtpZCI6ImRpc3B1dGUifQ.eyJleHAiOjE2ODU4NzM5MjksIm5iZiI6MTY4Mjg3MzkyOSwiaWF0IjoxNjgyODczOTI5LCJzdWIiOiJhbmRyZXcudmlzb2tpaEBnbWFpbC5jb20iLCJhbGlhcyI6InVzZXItdGVzdC05ZmVkMTk2NS02N2Q2LTQ0N2UtOWQwZS0xYmU2NzM2YTBiYjMifQ.UANSDwuoCg9sf3VED-PT7gD4Kw5VW1JjD9sDNrvh_veiNVdx6FYglc_WPLlmJqABimLyqHOXoiaMBRxK6KNGfA`;
 
