@@ -19,7 +19,7 @@ import StripeLogo from "@/assets/icons/StripeLogo";
 import EditIcon from "@/assets/icons/Edit";
 
 import { user, setUser } from "@/stores/user";
-import { STRIPE_OAUTH_URI } from "@/constants/stripe";
+import { createDispute, getRegisterKey } from "@/api/stripe-sync";
 
 const [showModal, setShowModal] = createSignal(false);
 const open = () => setShowModal(true);
@@ -229,6 +229,19 @@ export const TransactionsModalContent: Component<{
         </button>
       );
 
+      async function sendDataToBackend() {
+        try {
+          const data = await createDispute({
+            name: state.contact.fullName,
+            email: state.business.supportEmail,
+            address: state.contact.address,
+          });
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
       const addAccountFromState = () =>
         batch(() => {
           root_props.onAccountAdd && root_props.onAccountAdd();
@@ -251,6 +264,7 @@ export const TransactionsModalContent: Component<{
             setState(defaultState);
             setUserHasAccountsOnFirstRender(true);
             setShowAccountToProcessor(false);
+            sendDataToBackend();
           });
         });
 
@@ -394,13 +408,15 @@ export const TransactionsModalContent: Component<{
             </form>
           </Show>
 
-          <a
-            type="button"
-            href={STRIPE_OAUTH_URI}
-            class="bg-[#187FE7] py-2 px-4 rounded-3xl text-white font-medium text-[13px] leading-[14px] text-center w-fit mx-auto"
-          >
-            Add account
-          </a>
+          <Show when={currentStep() > 1}>
+            <button
+              type="button"
+              onClick={() => addAccountFromState()}
+              class="bg-[#187FE7] py-2 px-4 rounded-3xl text-white font-medium text-[13px] leading-[14px] text-center w-fit mx-auto"
+            >
+              Add account
+            </button>
+          </Show>
         </>
       );
     };

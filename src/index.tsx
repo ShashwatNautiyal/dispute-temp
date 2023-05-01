@@ -6,13 +6,7 @@ import type { Component } from "solid-js";
 import { render } from "solid-js/web";
 import { Show, lazy } from "solid-js";
 
-import {
-  Router,
-  useRoutes,
-  useLocation,
-  A,
-  useSearchParams,
-} from "@solidjs/router";
+import { Router, useRoutes, useLocation, A } from "@solidjs/router";
 import routes from "~solid-pages";
 
 import { Presence } from "@motionone/solid";
@@ -34,8 +28,7 @@ import MapBox from "@/components/MapBox";
 const App: Component = () => {
   const Routes = useRoutes(routes);
   const location = useLocation();
-  const [params] = useSearchParams();
-  console.log({ ...params });
+
   const [openTransactionModal] = useTransactionModal();
 
   return (
