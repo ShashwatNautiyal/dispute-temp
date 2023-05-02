@@ -170,6 +170,7 @@ export const TransactionsModalContent: Component<{
       enum Steps {
         CONTACT_DETAILS,
         BUSINESS_DETAILS,
+        API_KEY,
         SUBMIT,
       }
 
@@ -189,6 +190,9 @@ export const TransactionsModalContent: Component<{
           phone: "",
           supportEmail: "",
           websiteUrl: "",
+        },
+        apiKey: {
+          stripe: "",
         },
       };
 
@@ -229,13 +233,9 @@ export const TransactionsModalContent: Component<{
         </button>
       );
 
-      async function sendDataToBackend() {
+      async function handleCreateDispute() {
         try {
-          const data = await createDispute({
-            name: state.contact.fullName,
-            email: state.business.supportEmail,
-            address: state.contact.address,
-          });
+          const data = await createDispute(state);
           console.log(data);
         } catch (error) {
           console.log(error);
@@ -264,7 +264,7 @@ export const TransactionsModalContent: Component<{
             setState(defaultState);
             setUserHasAccountsOnFirstRender(true);
             setShowAccountToProcessor(false);
-            sendDataToBackend();
+            handleCreateDispute();
           });
         });
 
@@ -339,7 +339,7 @@ export const TransactionsModalContent: Component<{
               class="flex flex-col gap-4 pb-10"
               onSubmit={(e) => {
                 e.preventDefault();
-                setCurrentStep(Steps.SUBMIT);
+                setCurrentStep(Steps.API_KEY);
               }}
             >
               <div class="flex flex-col gap-2 w-[356px]">
@@ -407,8 +407,57 @@ export const TransactionsModalContent: Component<{
               </Show>
             </form>
           </Show>
-
           <Show when={currentStep() > 1}>
+            <form
+              class="flex flex-col gap-4 pb-10"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setCurrentStep(Steps.SUBMIT);
+              }}
+            >
+              <div class="flex flex-col gap-2 w-[356px]">
+                <div class="flex items-center gap-2">
+                  <p class="text-black font-medium text-[15px] leading-[18px]">
+                    API Key
+                  </p>
+                  <Show when={currentStep() !== Steps.API_KEY}>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(Steps.API_KEY)}
+                    >
+                      <EditIcon />
+                    </button>
+                  </Show>
+                </div>
+
+                <div class="flex flex-col border border-[#1D1D1F1F] divide-y divide-[#1D1D1F1F] rounded-lg">
+                  <Show
+                    when={currentStep() === Steps.API_KEY}
+                    fallback={
+                      <StepRecapContainer
+                        value={Object.values(state.apiKey).join(", ")}
+                      />
+                    }
+                  >
+                    <InputContainer
+                      type="text"
+                      placeholder="Stripe"
+                      value={state.apiKey.stripe}
+                      onValueChange={(value) =>
+                        setState("apiKey", "stripe", value)
+                      }
+                    />
+                  </Show>
+                </div>
+              </div>
+
+              <Show when={currentStep() === Steps.API_KEY}>
+                <NextButton />
+              </Show>
+            </form>
+          </Show>
+
+          <Show when={currentStep() > 2}>
             <button
               type="button"
               onClick={() => addAccountFromState()}

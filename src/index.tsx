@@ -2,7 +2,7 @@
 import "@/styles/globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import type { Component } from "solid-js";
+import { Component, onMount } from "solid-js";
 import { render } from "solid-js/web";
 import { Show, lazy } from "solid-js";
 
@@ -10,7 +10,7 @@ import { Router, useRoutes, useLocation, A } from "@solidjs/router";
 import routes from "~solid-pages";
 
 import { Presence } from "@motionone/solid";
-import { user } from "@/stores/user";
+import { setUser, user } from "@/stores/user";
 
 const AuthOnboarding = lazy(() => import("@/components/AuthOnboarding"));
 const WelcomeOnboarding = lazy(() => import("@/components/WelcomeOnboarding"));
@@ -28,6 +28,10 @@ import MapBox from "@/components/MapBox";
 const App: Component = () => {
   const Routes = useRoutes(routes);
   const location = useLocation();
+
+  onMount(() => {
+    setUser("ready", true);
+  });
 
   const [openTransactionModal] = useTransactionModal();
 
