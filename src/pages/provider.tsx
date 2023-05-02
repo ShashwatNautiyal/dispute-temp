@@ -25,14 +25,14 @@ const ProviderPage: Component = () => {
   const [searchValue, setSearchValue] = createSignal("");
   const filteredTransOverviewItems = createMemo(() =>
     searchValue()
-      ? TransOverviewItems.filter(
-          (item) =>
-            item.fromName.toLowerCase().includes(searchValue().toLowerCase()) ||
-            item.fromDescription
+      ? disputes().filter(
+          (item: any) =>
+            item.evidence.customer_name
               .toLowerCase()
-              .includes(searchValue().toLowerCase())
+              .includes(searchValue().toLowerCase()) ||
+            item.reason.toLowerCase().includes(searchValue().toLowerCase())
         )
-      : TransOverviewItems
+      : disputes()
   );
 
   return (
@@ -49,7 +49,7 @@ const ProviderPage: Component = () => {
 
         <div class="flex flex-col gap-[2px] p-2 h-full overflow-y-hidden mr-[var(--scrollbar-width)] hover:overflow-y-scroll hover:mr-0">
           <For
-            each={disputes()}
+            each={filteredTransOverviewItems()}
             fallback={
               <div class="w-[344px]">
                 <p class="text-[#EDEDEF] text-center">No item found</p>
@@ -58,13 +58,13 @@ const ProviderPage: Component = () => {
           >
             {(item: any, index) => (
               <>
-                <A href={`./${index()}`}>
+                <A href={item.id}>
                   <TransOverview
                     fromName={item.evidence.customer_name}
                     cardAmount={item.amount}
                     cardDigits="5567"
                     fromDate={new Date()}
-                    fromDescription={item.reson}
+                    fromDescription={item.reason}
                   />
                 </A>
 
