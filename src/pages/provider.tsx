@@ -7,7 +7,6 @@ import HandleTransition from "@/components/HandleTransition";
 import TransOverview from "@/components/TransOverview";
 import Search from "@/components/Search";
 
-import { TransOverviewItems } from "@/constants/providers";
 import { getDisputes } from "@/api/stripe-sync";
 
 const ProviderPage: Component = () => {
@@ -15,7 +14,6 @@ const ProviderPage: Component = () => {
   onMount(async () => {
     try {
       const resp = await getDisputes();
-      console.log(resp.data);
       setDisputes(resp.data);
     } catch (error) {
       console.log(error);
