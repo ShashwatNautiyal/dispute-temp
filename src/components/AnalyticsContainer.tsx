@@ -5,7 +5,7 @@ import OutcomeWrapper from "./OutcomeWrapper";
 
 const AnalyticsContainer = () => {
   return (
-    <div class="flex flex-col p-[24px] rounded-[12px] max-w-[350px] z-30 w-full max-h-min bg-[#ffffff] gap-[16px]">
+    <div class="flex flex-col p-[24px] rounded-[12px] max-w-[350px] z-30 w-full max-h-min bg-[#ffffff] gap-[16px] relative shadow-xl overflow-hidden">
       <ChargeBackCountWrapper />
       <Divider addClass="-mx-[24px]" />
       <OutcomeWrapper />

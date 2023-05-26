@@ -24,6 +24,7 @@ import TransactionsModal, {
   useTransactionModal,
 } from "@/components/modals/TransactionsModal";
 import MapBox from "@/components/MapBox";
+import AnalyticsContainer from "./components/AnalyticsContainer";
 
 const App: Component = () => {
   const Routes = useRoutes(routes);
@@ -42,6 +43,10 @@ const App: Component = () => {
           <MapBox accessToken="pk.eyJ1IjoiYmh1bWFuIiwiYSI6ImNsYm5teG5oYTAyam0zbmxoOXg1NDQ5cDEifQ.yRnnevMJJVSEnRU1RwmYjQ" />
         </div>
       </Show>
+
+      <div class="grid place-items-center h-screen w-screen">
+        <AnalyticsContainer />
+      </div>
 
       <Presence exitBeforeEnter>
         <Show when={!user.loggedIn && !user.ready}>
