@@ -22,7 +22,7 @@ const ChargeBackCountWrapper = () => {
   return (
     <>
       <ChargeBackCount name="Chargebacks" number={10} dollar={100} />
-      <Graph list={series.list} />
+      <Graph height={114} list={series.list} />
       <div class="flex gap-[12px]">
         <CardBrandCount number="85" type="visa" />
         <CardBrandCount number="15" type="mastercard" />

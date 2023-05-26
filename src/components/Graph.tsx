@@ -1,8 +1,8 @@
 import { createBarChart } from "micro-charts";
 import { Component, createEffect, on } from "solid-js";
-import { createStore } from "solid-js/store";
 
 const Graph: Component<{
+  height?: number;
   list: {
     color: string;
     name: string;
@@ -33,7 +33,6 @@ const Graph: Component<{
         if (!canvas) return;
         createBarChart(canvas, getBarsData(), {
           barColors: list.map((serie) => serie.color),
-
           rowCount: 3,
           rowColor: "rgba(40, 40, 40, .3)",
           barWidth: 14,
@@ -46,7 +45,13 @@ const Graph: Component<{
 
   return (
     <div class="border relative">
-      <canvas class="h-full w-full" ref={canvas} />
+      <canvas
+        style={{
+          "max-height": props.height ? `${props.height}px` : "100%",
+        }}
+        class="w-full"
+        ref={canvas}
+      />
     </div>
   );
 };
