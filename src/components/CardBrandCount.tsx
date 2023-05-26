@@ -15,7 +15,7 @@ const CardBrandCount: Component<{
             {props.type}
           </div>
         </div>
-        <div class="flex w-[95px] h-[24px] text-[19px] text-[#1d1d1f]">
+        <div class="flex w-[95px] h-[24px] font-[500] text-[19px] text-[#1d1d1f]">
           {props.number}
         </div>
       </div>

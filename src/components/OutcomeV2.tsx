@@ -27,7 +27,7 @@ const OutcomeV2: Component<{
           {props.type}
         </div>
       </div>
-      <div class="flex w-[133px] h-[24px] text-[17px] text-[#1d1d1f]">
+      <div class="flex w-[133px] h-[24px] text-[17px] font-[500] text-[#1d1d1f]">
         {props.number}
       </div>
     </div>

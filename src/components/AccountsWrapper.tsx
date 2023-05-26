@@ -1,7 +1,6 @@
 import { Component, For } from "solid-js";
 
-const Accounts: Component<{
-  name: string;
+const AccountsCount: Component<{
   number: number;
   upNumber: number;
   healthValue: {
@@ -12,11 +11,11 @@ const Accounts: Component<{
 }> = (props) => {
   return (
     <div class="flex flex-col max-w-[306px] w-full max-h-[62px] h-full gap-[2px]">
-      <div class="flex w-[94px] h-[20px] text-[15px] text-[#494949]">
-        {props.name}
+      <div class="flex w-[94px] h-[20px] font-[500] text-[15px] text-[#494949]">
+        Accounts
       </div>
       <div class="flex w-[306px] h-[40px] gap-[8px]">
-        <div class="flex w-[78px] h-[40px] text-[33px] text-[#1d1d1f]">
+        <div class="flex w-[78px] h-[40px] text-[33px] font-[600] text-[#1d1d1f]">
           {props.number}
         </div>
         <div class="flex w-[220px] h-[40px] gap-[4px]">
@@ -29,7 +28,7 @@ const Accounts: Component<{
             </div>
           </div>
           <div class="flex flex-col w-[196px] h-[40px] gap-[4px]">
-            <div class="flex w-[48px] h-[20px] text-[13px] text-[#494949]">
+            <div class="flex w-[48px] h-[20px] font-[500] text-[13px] text-[#494949]">
               {props.upNumber}
             </div>
             <div class="flex items-center w-[196px] h-[16px] gap-[8px]">
@@ -72,4 +71,4 @@ const ArrowUp = () => (
   </svg>
 );
 
-export default Accounts;
+export default AccountsCount;
