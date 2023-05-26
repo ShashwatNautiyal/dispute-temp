@@ -6,7 +6,7 @@ const Divider: Component<{
   return (
     <div
       style={{
-        border: "1px solid rgba(29, 29, 31, 0.12)",
+        border: "1px solid rgba(29, 29, 31, 0.08)",
       }}
       class={`${props.addClass ?? ""}`}
     />
