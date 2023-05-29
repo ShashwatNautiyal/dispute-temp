@@ -24,6 +24,8 @@ import TransactionsModal, {
   useTransactionModal,
 } from "@/components/modals/TransactionsModal";
 import MapBox from "@/components/MapBox";
+import AnalyticsContainer from "./components/AnalyticsContainer";
+import Widgets from "./components/Widgets";
 
 const App: Component = () => {
   const Routes = useRoutes(routes);
@@ -42,6 +44,28 @@ const App: Component = () => {
           <MapBox accessToken="pk.eyJ1IjoiYmh1bWFuIiwiYSI6ImNsYm5teG5oYTAyam0zbmxoOXg1NDQ5cDEifQ.yRnnevMJJVSEnRU1RwmYjQ" />
         </div>
       </Show>
+
+      <div class="flex justify-between items-center h-screen w-screen p-6 w-90vw max-w-[1440px] mx-auto">
+        <div class="flex flex-col gap-[12px]">
+          <Widgets
+            type="info"
+            dollar={10}
+            percentage={10}
+            title="Stripe - 7786"
+          />
+          <Widgets
+            type="graph"
+            healthValue={{
+              value: 8,
+              total: 10,
+            }}
+            number={10}
+            percentage={10}
+            title="Stripe - 7786"
+          />
+        </div>
+        <AnalyticsContainer />
+      </div>
 
       <Presence exitBeforeEnter>
         <Show when={!user.loggedIn && !user.ready}>

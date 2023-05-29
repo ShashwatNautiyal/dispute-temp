@@ -1,10 +1,10 @@
-import { Component, createMemo, For, createEffect, on } from "solid-js";
+import { Component, createMemo, For } from "solid-js";
 
 import { createStore } from "solid-js/store";
-import { createBarChart } from "micro-charts";
 
 import Outcome from "@/components/Outcome";
 import { Motion } from "@motionone/solid";
+import Graph from "./Graph";
 
 const LineChartPercent: Component<{ label: string; percent: number }> = (
   props
@@ -26,8 +26,6 @@ const LineChartPercent: Component<{ label: string; percent: number }> = (
 );
 
 const Stats: Component = () => {
-  let canvas: HTMLCanvasElement | undefined;
-
   const [series] = createStore({
     list: [
       {
@@ -43,41 +41,6 @@ const Stats: Component = () => {
     ],
   });
 
-  const getBarsData = () => {
-    const lengths = series.list.map((serie) => serie.data.length);
-    const length = Math.min(...lengths);
-
-    const data = [];
-    for (let i = 0; i < length; i++) {
-      data.push({
-        id: i.toString(),
-        values: series.list.map((serie) => serie.data[i]),
-      });
-    }
-
-    return data;
-  };
-
-  createEffect(
-    on(
-      () => series.list,
-      (list) => {
-        if (!canvas) {
-          throw new Error("Canvas is not defined");
-        }
-        createBarChart(canvas, getBarsData(), {
-          barColors: list.map((serie) => serie.color),
-
-          rowCount: 3,
-          rowColor: "rgba(40, 40, 40, .3)",
-          barWidth: 14,
-          barRadius: 0,
-          stacked: true,
-        });
-      }
-    )
-  );
-
   const sum = (list: number[]) => list.reduce((prev, curr) => prev + curr);
   const seriesListTotal = createMemo(() =>
     sum(series.list.map((list) => sum(list.data)))
@@ -91,9 +54,7 @@ const Stats: Component = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div class="border relative">
-          <canvas class="h-full w-full" ref={canvas} />
-        </div>
+        <Graph list={series.list} />
 
         <div
           class="grid gap-2"
