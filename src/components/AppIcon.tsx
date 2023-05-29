@@ -4,14 +4,20 @@ import { Show } from "solid-js";
 import AppNotifications from "./AppNotifications";
 import AppIndicatorBar from "./AppIndicatorBar";
 
-const AppIcon: Component<{ active: boolean, letter: string, showNotifications: boolean, notifications?: string }> = (props) => {
+const AppIcon: Component<{
+  active: boolean;
+  letter: string;
+  showNotifications: boolean;
+  notifications?: string;
+}> = (props) => {
   return (
     <div class="flex items-center gap-1 group">
       <AppIndicatorBar active={props.active} />
-      <div class="relative flex-shrink-0 h-[44px] w-[44px] bg-black text-white flex justify-center items-center transition-[border-radius]"
+      <div
+        class="relative flex-shrink-0 h-[44px] w-[44px] bg-black text-white flex justify-center items-center transition-[border-radius]"
         classList={{
           "rounded-[22px] group-hover:rounded-xl": !props.active,
-          "rounded-xl": props.active
+          "rounded-xl": props.active,
         }}
       >
         <div class="h-[20px] w-[20px] flex justify-center items-center">
@@ -22,7 +28,7 @@ const AppIcon: Component<{ active: boolean, letter: string, showNotifications: b
 
         <Show when={props.showNotifications}>
           <div class="absolute bottom-0 right-0">
-            <AppNotifications text={props.notifications} />
+            <AppNotifications text={props.notifications ?? ""} />
           </div>
         </Show>
       </div>

@@ -17,33 +17,33 @@ const TextField: Component<{
   const [loading, setLoading] = createSignal(false);
 
   const [value, setValue] =
-    (props.value !== undefined && props.setValue)
+    props.value !== undefined && props.setValue
       ? [props.value, props.setValue]
       : createSignal("");
 
-  const handleSubmit: JSX.EventHandler<HTMLFormElement, SubmitEvent> = async (event) => {
+  const handleSubmit: JSX.EventHandler<HTMLFormElement, SubmitEvent> = async (
+    event
+  ) => {
     event.preventDefault();
-    if (props.disabled?.(value, loading) || props.onSubmit === undefined) return;
+    if (props.disabled?.(value, loading) || props.onSubmit === undefined)
+      return;
 
     try {
       setLoading(true);
       await props.onSubmit(value());
-    }
-    catch (e) {
+    } catch (e) {
       if (props.errorToString) {
         setError(props.errorToString(e));
-      }
-      else {
+      } else {
         setError(
           e instanceof Error
             ? e.message
             : typeof e === "string"
-              ? e
-              : "Something went wrong"
+            ? e
+            : "Something went wrong"
         );
       }
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -53,33 +53,41 @@ const TextField: Component<{
       <div
         class="flex justify-center bg-white items-center w-full gap-2.5 px-3 py-2 rounded-xl border focus-within:border-[#187FE7] focus-within:outline-[#187FE7]/20 focus-within:outline-2 focus-within:shadow-[0_0_0_2px_rgb(24,127,231,.2)]"
         classList={{
-          "border-[#E30000] bg-[#FFF2F4] shadow-[0_0_0_2px_rgb(255,0,0,.2)]": error() !== null,
-          "border-[#1d1d1f]/20": error() === null
+          "border-[#E30000] bg-[#FFF2F4] shadow-[0_0_0_2px_rgb(255,0,0,.2)]":
+            error() !== null,
+          "border-[#1d1d1f]/20": error() === null,
         }}
       >
         <form
           onSubmit={handleSubmit}
           class="flex justify-start items-center self-stretch flex-grow relative gap-2"
         >
-          <input type={props.type}
+          <input
+            type={props.type}
             class="leading-6 text-[19px] text-left w-full outline-none bg-inherit"
             classList={{
-              "text-[#E30000] placeholder:text-[#E30000]": error() !== null
+              "text-[#E30000] placeholder:text-[#E30000]": error() !== null,
             }}
             value={value()}
-            onInput={(event) => batch(() => {
-              setError(null);
-              setValue(event.currentTarget.value);
-            })}
-
+            onInput={(event) =>
+              batch(() => {
+                setError(null);
+                setValue(event.currentTarget.value);
+              })
+            }
             placeholder={props.placeholder}
           />
 
-          <Show when={loading()}
+          <Show
+            when={loading()}
             fallback={
-              props.trailing ? <props.trailing
-                disabled={() => props.disabled?.(value, loading)}
-              /> : <></>
+              props.trailing ? (
+                <props.trailing
+                  disabled={() => props.disabled?.(value, loading) ?? false}
+                />
+              ) : (
+                <></>
+              )
             }
           >
             {props.loadingIcon ? <props.loadingIcon /> : <></>}
@@ -87,7 +95,7 @@ const TextField: Component<{
         </form>
       </div>
 
-      <ShownError error={error()} />
+      <ShownError error={error() ?? ""} />
     </div>
   );
 };
