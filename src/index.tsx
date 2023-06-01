@@ -31,10 +31,6 @@ const App: Component = () => {
   const Routes = useRoutes(routes);
   const location = useLocation();
 
-  onMount(() => {
-    setUser("ready", true);
-  });
-
   const [openTransactionModal] = useTransactionModal();
 
   return (
