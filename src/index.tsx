@@ -41,28 +41,6 @@ const App: Component = () => {
         </div>
       </Show>
 
-      <div class="flex justify-between items-center h-screen w-screen p-6 w-90vw max-w-[1440px] mx-auto">
-        <div class="flex flex-col gap-[12px]">
-          <Widgets
-            type="info"
-            dollar={10}
-            percentage={10}
-            title="Stripe - 7786"
-          />
-          <Widgets
-            type="graph"
-            healthValue={{
-              value: 8,
-              total: 10,
-            }}
-            number={10}
-            percentage={10}
-            title="Stripe - 7786"
-          />
-        </div>
-        <AnalyticsContainer />
-      </div>
-
       <Presence exitBeforeEnter>
         <Show when={!user.loggedIn && !user.ready}>
           <AuthOnboarding />
